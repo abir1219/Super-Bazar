@@ -166,22 +166,25 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/ncvHome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
-            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp">
 
                     <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/sliderView"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="220dp"
                         android:layout_below="@+id/etSearch"
                         android:layout_margin="4dp"
                         app:sliderAnimationDuration="1000"
@@ -210,74 +213,7 @@
                     android:id="@+id/rvAllPro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@color/baseColor">
-
-                            <TextView
-                                android:id="@+id/tvCat1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:text="Option"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:id="@+id/llView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="right"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="5dp">
-
-                                <Button
-                                    android:id="@+id/btViewAll"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/btn_go"
-                                    android:text="View All"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp" />
-                                <!--<TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="View More"
-                                    android:textColor="@color/white"
-                                    android:textSize="15sp"></TextView>
-                                <ImageView
-                                    android:padding="5dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_zlist"></ImageView>-->
-                            </LinearLayout>
-                        </FrameLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvProduct"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
+                    android:layout_marginTop="10dp" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
