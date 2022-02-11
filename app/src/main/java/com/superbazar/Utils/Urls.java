@@ -8,4 +8,10 @@ public class Urls {
         Method: POST
      */
     public static String SLIDER = BASE_URL + "slider";
+
+    /*
+        Function: category
+        Method: POST
+     */
+    public static String CATEGORY = BASE_URL + "category";
 }

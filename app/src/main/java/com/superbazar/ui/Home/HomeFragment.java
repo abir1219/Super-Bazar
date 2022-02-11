@@ -3,6 +3,8 @@ package com.superbazar.ui.Home;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +19,10 @@ import com.android.volley.toolbox.Volley;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.superbazar.Adapter.BannerAdapter;
+import com.superbazar.Adapter.CategoryAdapter;
 import com.superbazar.MainActivity;
 import com.superbazar.Model.BannerModel;
+import com.superbazar.Model.CategoryModel;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentHomeBinding;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     FragmentHomeBinding binding;
     ArrayList<BannerModel> bannerModelList;
+    ArrayList<CategoryModel> categoryModelList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +44,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         BtnClick();
+        setLayout();
         loadSlider();
+        loadCategory();
         return binding.getRoot();
+    }
+
+    private void setLayout() {
+        binding.rvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
+    }
+
+    private void loadCategory() {
+        categoryModelList = new ArrayList<>();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CATEGORY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        JSONArray array = jsonObject.getJSONArray("results");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String CategoryId = object.getString("CategoryId");
+                            String CategoryDisplayName = object.getString("CategoryDisplayName");
+                            String CategoryImage = "https://smlawb.org/superbazaar/web/uploads/category/" + object.getString("CategoryImage");
+
+                            categoryModelList.add(new CategoryModel(CategoryId,CategoryDisplayName,CategoryImage));
+                        }
+                        CategoryAdapter adapter = new CategoryAdapter(categoryModelList,getActivity());
+                        binding.rvCategory.setAdapter(adapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void loadSlider() {
