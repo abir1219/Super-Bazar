@@ -12,5 +12,6 @@
     <color name="red">#C9E91E63</color>
     <color name="colorPink">#E83F86</color>
     <color name="colorOrange">#83C441</color>
+    <color name="colorTrans">#5B000000</color>
     <color name="gray">#C8808080</color>
 </resources>
