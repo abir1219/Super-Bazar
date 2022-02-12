@@ -1,4 +1,4 @@
-package com.superbazar.Adapter;
+package com.superbazar.ui.Home.Adapter;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -8,11 +8,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
-import com.smarteist.autoimageslider.SliderView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
-import com.superbazar.Model.BannerModel;
+import com.superbazar.ui.Home.Model.BannerModel;
 import com.superbazar.R;
 
 import java.util.ArrayList;

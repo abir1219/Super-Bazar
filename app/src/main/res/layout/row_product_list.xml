@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="10dp">
-    <LinearLayout android:layout_width="match_parent"
+
+    <LinearLayout
+        android:id="@+id/llPDV"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/llPDV">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="7dp"
             android:layout_marginBottom="5dp"
-            >
+            android:orientation="horizontal"
+            android:paddingTop="7dp">
+
             <RelativeLayout
                 android:layout_width="120dp"
                 android:layout_height="110dp">
@@ -25,53 +27,54 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    >
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp">
+
                     <ImageView
                         android:id="@+id/ivPPic"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/notification"
-                        />
+                        android:src="@drawable/notification" />
                     <!--                        android:background="@color/colorBlue"-->
                     <TextView
-                        android:visibility="gone"
                         android:id="@+id/tvOStock"
-                        android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/colorTrans"
+                        android:gravity="center"
                         android:text="OUT OF STOCK"
                         android:textColor="@color/white"
-                        android:background="@color/colorTrans"
                         android:textSize="13sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                 </FrameLayout>
 
             </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginLeft="5dp"
-                >
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:layout_weight="1"
                         android:id="@+id/tvTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        tools:text="Product Title"
-                            android:textColor="@color/black"
-                        android:textSize="15sp"
+                        android:layout_weight="1"
                         android:maxLines="2"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:text="Product Title" />
 
                     <!--<ImageView
                         android:id="@+id/ivInfo"
@@ -80,44 +83,45 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_z_info"/>-->
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Product Info"
                     android:textColor="@color/gray"
                     android:textSize="12sp"
-                    />
+                    tools:text="Product Info" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tvOffPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        tools:text="₹ 180.00 "
                         android:textColor="@color/red"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="₹ 180.00 " />
+
                     <FrameLayout
                         android:id="@+id/flPrice"
-                        android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:foreground="@drawable/ic_z_strike_small"
                         android:layout_gravity="center"
-                        >
+                        android:layout_marginLeft="10dp"
+                        android:foreground="@drawable/ic_z_strike_small">
+
                         <TextView
                             android:id="@+id/tvPrice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:text="₹ 200.00 "
                             android:textColor="@color/black"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            tools:text="₹ 200.00 " />
                     </FrameLayout>
                 </LinearLayout>
                 <!--<TextView
@@ -130,26 +134,27 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    >
+                    android:layout_marginTop="5dp">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         app:cardCornerRadius="5dp">
+
                         <LinearLayout
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/baseColor"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp">
+
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_zstar"
-                                app:tint="@color/white"/>
+                                app:tint="@color/white" />
 
                             <TextView
                                 android:id="@+id/tvRating"
@@ -157,52 +162,54 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical"
                                 android:paddingLeft="5dp"
-                                android:textColor="@color/white"
-                                android:text="4.5" />
+                                android:text="4.5"
+                                android:textColor="@color/white" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
-                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
                         <ImageView
                             android:id="@+id/ivMinus"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
                             android:src="@drawable/ic_zminus"
-                            app:tint="@color/gray"/>
+                            app:tint="@color/gray" />
+
                         <EditText
                             android:id="@+id/tvCount"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:paddingTop="3dp"
-                            android:paddingBottom="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:digits="0123456789"
-                            android:text="1"
-                            android:textSize="15sp"
-                            android:textColor="@color/black"
-                            android:gravity="center_vertical"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/edit_text_borser"
+                            android:digits="0123456789"
+                            android:gravity="center_vertical"
+                            android:inputType="number"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="3dp"
+                            android:text="1"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
 
                             />
 
                         <ImageView
                             android:id="@+id/ivPlus"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
                             android:src="@drawable/ic_zplus"
-                            app:tint="@color/gray"/>
+                            app:tint="@color/gray" />
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -210,10 +217,10 @@
         </LinearLayout>
 
         <View
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:layout_marginTop="5dp"
+            android:background="@color/gray" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

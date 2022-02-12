@@ -11,7 +11,21 @@
         android:name="com.superbazar.ui.Home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
+
+        <action android:id="@+id/nav_home_to_product_list"
+            app:destination="@+id/navigation_productList"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_productList"
+        android:name="com.superbazar.ui.ProductList.ProductListFragment"
+        android:label="Product List"
+        tools:layout="@layout/fragment_home"></fragment>
 
 
 </navigation>

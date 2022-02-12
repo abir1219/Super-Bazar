@@ -1,4 +1,4 @@
-package com.superbazar.Model;
+package com.superbazar.ui.Home.Model;
 
 public class BannerModel {
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
-import com.superbazar.Adapter.BannerAdapter;
-import com.superbazar.Adapter.CategoryAdapter;
+import com.superbazar.ui.Home.Adapter.BannerAdapter;
+import com.superbazar.ui.Home.Adapter.CategoryAdapter;
 import com.superbazar.MainActivity;
-import com.superbazar.Model.BannerModel;
-import com.superbazar.Model.CategoryModel;
+import com.superbazar.ui.Home.Model.BannerModel;
+import com.superbazar.ui.Home.Model.CategoryModel;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentHomeBinding;
@@ -93,6 +94,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.SLIDER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("RESPONSE",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
@@ -119,7 +121,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
             }
         });
-
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
