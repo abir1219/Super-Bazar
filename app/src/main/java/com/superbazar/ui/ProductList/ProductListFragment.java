@@ -2,7 +2,6 @@ package com.superbazar.ui.ProductList;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +20,7 @@ import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentProductListBinding;
+import com.superbazar.ui.ProductList.Adapter.ProductListAdapter;
 import com.superbazar.ui.ProductList.Model.ProductListModel;
 
 import org.json.JSONArray;
@@ -30,9 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProductListFragment extends Fragment implements View.OnClickListener {
     FragmentProductListBinding binding;

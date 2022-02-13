@@ -25,13 +25,28 @@
         android:id="@+id/navigation_productList"
         android:name="com.superbazar.ui.ProductList.ProductListFragment"
         android:label="Product List"
-        tools:layout="@layout/fragment_product_list"></fragment>
+        tools:layout="@layout/fragment_product_list">
+
+        <action android:id="@+id/nav_home_to_product_details"
+            app:destination="@+id/navigation_product_details"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_category"
         android:name="com.superbazar.ui.Category.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category"></fragment>
+
+    <fragment
+        android:id="@+id/navigation_product_details"
+        android:name="com.superbazar.ui.ProductDetails.ProductDetailsFragment"
+        android:label="Product Details"
+        tools:layout="@layout/fragment_product_details"></fragment>
 
 
 </navigation>
