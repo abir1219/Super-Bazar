@@ -1,14 +1,15 @@
 package com.superbazar.ui.ProductList.Model;
 
 public class ProductListModel {
-    String id,prodName,prodImage,actualPrice,shopPrice;
+    String id,prodName,prodImage,actualPrice,shopPrice,shortDesc;
 
-    public ProductListModel(String id, String prodName, String prodImage, String actualPrice, String shopPrice) {
+    public ProductListModel(String id, String prodName, String prodImage, String actualPrice, String shopPrice,String shortDesc) {
         this.id = id;
         this.prodName = prodName;
         this.prodImage = prodImage;
         this.actualPrice = actualPrice;
         this.shopPrice = shopPrice;
+        this.shortDesc = shortDesc;
     }
 
     public String getId() {
@@ -29,5 +30,9 @@ public class ProductListModel {
 
     public String getShopPrice() {
         return shopPrice;
+    }
+
+    public String getShortDesc() {
+        return shortDesc;
     }
 }

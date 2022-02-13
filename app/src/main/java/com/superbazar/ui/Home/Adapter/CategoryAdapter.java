@@ -43,10 +43,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "id: "+modelList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "id: "+modelList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("id",modelList.get(position).getId());
-                Navigation.findNavController(view).navigate(R.id.nav_home_to_product_list);
+                Navigation.findNavController(view).navigate(R.id.nav_home_to_product_list,bundle);
             }
         });
     }

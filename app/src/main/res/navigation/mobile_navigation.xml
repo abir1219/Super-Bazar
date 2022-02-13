@@ -25,7 +25,13 @@
         android:id="@+id/navigation_productList"
         android:name="com.superbazar.ui.ProductList.ProductListFragment"
         android:label="Product List"
-        tools:layout="@layout/fragment_home"></fragment>
+        tools:layout="@layout/fragment_product_list"></fragment>
+
+    <fragment
+        android:id="@+id/navigation_category"
+        android:name="com.superbazar.ui.Category.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category"></fragment>
 
 
 </navigation>

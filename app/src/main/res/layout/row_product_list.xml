@@ -31,12 +31,12 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="10dp">
 
-                    <ImageView
-                        android:id="@+id/ivPPic"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/notification" />
-                    <!--                        android:background="@color/colorBlue"-->
+                        <ImageView
+                            android:id="@+id/ivPPic"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/notification" />
+
                     <TextView
                         android:id="@+id/tvOStock"
                         android:layout_width="match_parent"
