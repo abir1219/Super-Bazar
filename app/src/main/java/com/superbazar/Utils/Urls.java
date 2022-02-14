@@ -20,4 +20,11 @@ public class Urls {
    Method: POST
     */
     public static String CATEGORYWISEPRODCUTDETAILS = BASE_URL + "categorywiseproductdetails";
+
+    /*
+    Function: productdetails
+    Parameter : id
+    Method: POST
+     */
+    public static String PRODUCT_DETAILS = BASE_URL + "productdetails";
 }
