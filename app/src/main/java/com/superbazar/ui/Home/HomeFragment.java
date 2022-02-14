@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void setLayout() {
         binding.rvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
+        binding.rvNewArrivalProduct.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
     }
 
     private void loadCategory() {
