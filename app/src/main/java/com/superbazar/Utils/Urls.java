@@ -33,4 +33,12 @@ public class Urls {
     Method: POST
      */
     public static String NEW_ARRIVAL_PRODUCT = BASE_URL + "product-by-new-arrivial";
+
+
+    /*
+    Function: product-by-best-seller
+    Method: POST
+     */
+    public static String BEST_SELLER_PRODUCT = BASE_URL + "product-by-best-seller";
+
 }

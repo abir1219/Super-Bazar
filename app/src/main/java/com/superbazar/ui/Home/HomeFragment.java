@@ -22,11 +22,13 @@ import com.smarteist.autoimageslider.SliderAnimations;
 import com.superbazar.ui.Home.Adapter.BannerAdapter;
 import com.superbazar.ui.Home.Adapter.CategoryAdapter;
 import com.superbazar.MainActivity;
+import com.superbazar.ui.Home.Adapter.ProductAdapter;
 import com.superbazar.ui.Home.Model.BannerModel;
 import com.superbazar.ui.Home.Model.CategoryModel;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentHomeBinding;
+import com.superbazar.ui.Home.Model.ProductModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     FragmentHomeBinding binding;
     ArrayList<BannerModel> bannerModelList;
     ArrayList<CategoryModel> categoryModelList;
+    ArrayList<ProductModel> productModelList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,13 +52,73 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         loadSlider();
         loadCategory();
         loadNewArrivalProducts();
+        loadBestSellerProducts();
         return binding.getRoot();
     }
 
+    private void loadBestSellerProducts() {
+        productModelList = new ArrayList<>();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.BEST_SELLER_PRODUCT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        JSONArray array = jsonObject.getJSONArray("results");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String ProductId = object.getString("ProductId");
+                            String ProductName = object.getString("ProductName");
+                            JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +
+                                    obj.getString("ProductFileName");
+
+                            productModelList.add(new ProductModel(ProductId,ProductName,ProductFileName));
+                        }
+                        ProductAdapter adapter = new ProductAdapter(productModelList,getActivity());
+                        binding.rvBestSellerProduct.setAdapter(adapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
     private void loadNewArrivalProducts() {
+        productModelList = new ArrayList<>();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.NEW_ARRIVAL_PRODUCT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        JSONArray array = jsonObject.getJSONArray("results");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject object = array.getJSONObject(i);
+                            String ProductId = object.getString("ProductId");
+                            String ProductName = object.getString("ProductName");
+                            JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +
+                                    obj.getString("ProductFileName");
+
+                            productModelList.add(new ProductModel(ProductId,ProductName,ProductFileName));
+                        }
+                        ProductAdapter adapter = new ProductAdapter(productModelList,getActivity());
+                        binding.rvNewArrivalProduct.setAdapter(adapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -70,6 +133,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void setLayout() {
         binding.rvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
         binding.rvNewArrivalProduct.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
+        binding.rvBestSellerProduct.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
     }
 
     private void loadCategory() {
