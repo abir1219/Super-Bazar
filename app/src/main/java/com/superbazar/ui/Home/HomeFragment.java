@@ -48,7 +48,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         setLayout();
         loadSlider();
         loadCategory();
+        loadNewArrivalProducts();
         return binding.getRoot();
+    }
+
+    private void loadNewArrivalProducts() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.NEW_ARRIVAL_PRODUCT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void setLayout() {

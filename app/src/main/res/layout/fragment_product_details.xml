@@ -193,7 +193,7 @@
 
                             <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
-                                android:layout_height="500dp"
+                                android:layout_height="450dp"
                                 android:layout_marginBottom="10dp">
 
                                 <FrameLayout
@@ -203,7 +203,7 @@
                                     <com.smarteist.autoimageslider.SliderView
                                         android:id="@+id/sliderView"
                                         android:layout_width="match_parent"
-                                        android:layout_height="500dp"
+                                        android:layout_height="450dp"
                                         android:layout_below="@+id/etSearch"
                                         android:layout_margin="4dp"
                                         app:sliderAnimationDuration="1000"

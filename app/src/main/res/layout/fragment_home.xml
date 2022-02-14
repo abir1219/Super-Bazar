@@ -207,15 +207,36 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal"
+                    tools:itemCount="2"
                     android:layout_marginLeft="2.5dp"
                     android:layout_marginRight="2.5dp"
                     />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvAllPro"
+                <TextView
+                    android:id="@+id/tv5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_below="@+id/categoryRecyclierView"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/btn_go"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="4dp"
+                    android:text="New Arrival"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tv5"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    tools:itemCount="2" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
