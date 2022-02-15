@@ -55,8 +55,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
                         JSONObject object = jsonObject.getJSONObject("results");
-                        binding.tvOffPrice.setText("₹ " + object.getString("ProductMarketPrice"));
-                        binding.tvPrice.setText("₹ " + object.getString("ProductSellingPrice"));
+                        binding.tvPrice.setText("₹ " + object.getString("ProductMarketPrice"));
+                        binding.tvOffPrice.setText("₹ " + object.getString("ProductSellingPrice"));
                         binding.tvProductName.setText(object.getString("ProductName"));
                         binding.tvProdDesc.setText(object.getString("ProductShortDescription"));
                         binding.tvpDescr.setText(Html.fromHtml(object.getString("ProductLongDescription")));

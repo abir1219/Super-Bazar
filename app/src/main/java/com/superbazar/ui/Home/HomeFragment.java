@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<BannerModel> bannerModelList;
     ArrayList<CategoryModel> categoryModelList;
     ArrayList<ProductModel> productModelList;
+    ArrayList<ProductModel> bestSellerProductModelList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,10 +58,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadBestSellerProducts() {
-        productModelList = new ArrayList<>();
+        bestSellerProductModelList = new ArrayList<>();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.BEST_SELLER_PRODUCT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                //Log.d("Best_Seller_RES",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
@@ -70,13 +72,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             String ProductId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            //Log.d("SELLER_jsonArray",jsonArray.toString());
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +
                                     obj.getString("ProductFileName");
 
-                            productModelList.add(new ProductModel(ProductId,ProductName,ProductFileName));
+                            bestSellerProductModelList.add(new ProductModel(ProductId,ProductName,ProductFileName));
                         }
-                        ProductAdapter adapter = new ProductAdapter(productModelList,getActivity());
+                        ProductAdapter adapter = new ProductAdapter(bestSellerProductModelList,getActivity());
                         binding.rvBestSellerProduct.setAdapter(adapter);
                     }
                 } catch (JSONException e) {

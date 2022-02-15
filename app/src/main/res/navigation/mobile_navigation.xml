@@ -19,6 +19,13 @@
             app:popExitAnim="@anim/fade_out_animation"
             app:exitAnim="@anim/fade_out_animation"/>
 
+        <action android:id="@+id/nav_home_to_product_details"
+            app:destination="@+id/navigation_product_details"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
     </fragment>
 
     <fragment
@@ -27,7 +34,7 @@
         android:label="Product List"
         tools:layout="@layout/fragment_product_list">
 
-        <action android:id="@+id/nav_home_to_product_details"
+        <action android:id="@+id/nav_prodList_to_product_details"
             app:destination="@+id/navigation_product_details"
             app:popEnterAnim="@anim/fade_in_animation"
             app:enterAnim="@anim/fade_in_animation"

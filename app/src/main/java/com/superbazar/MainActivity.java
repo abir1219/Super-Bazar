@@ -225,6 +225,4 @@ public class MainActivity extends AppCompatActivity {
     public interface OnDrawerMenuListener {
         void onDrawerMenuClick(int pos);
     }
-
-
 }

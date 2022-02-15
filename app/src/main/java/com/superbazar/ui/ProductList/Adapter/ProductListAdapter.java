@@ -38,8 +38,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTitle.setText(modelList.get(position).getProdName());
         holder.tvDetails.setText(modelList.get(position).getShortDesc());
-        holder.tvOffPrice.setText("₹ "+modelList.get(position).getActualPrice());
-        holder.tvPrice.setText("₹ "+modelList.get(position).getShopPrice());
+        holder.tvPrice.setText("₹ "+modelList.get(position).getActualPrice());
+        holder.tvOffPrice.setText("₹ "+modelList.get(position).getShopPrice());
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +47,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString("id",modelList.get(position).getId());
-                Navigation.findNavController(view).navigate(R.id.nav_home_to_product_details,bundle);
+                Navigation.findNavController(view).navigate(R.id.nav_prodList_to_product_details,bundle);
             }
         });
     }

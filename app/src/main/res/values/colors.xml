@@ -15,4 +15,5 @@
     <color name="colorOrange">#83C441</color>
     <color name="colorTrans">#5B000000</color>
     <color name="gray">#C8808080</color>
+    <color name="gray1">#11808080</color>
 </resources>
