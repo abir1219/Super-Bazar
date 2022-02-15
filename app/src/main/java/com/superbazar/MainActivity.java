@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
         modelList = new ArrayList<>();
 
-        /*modelList.add(new DrawerModel(R.drawable.money, "Get Cash"));
-        modelList.add(new DrawerModel(R.drawable.stretching, "Activity"));
+        modelList.add(new DrawerModel(R.drawable.ic_baseline_home_24, "Home"));
+        /*modelList.add(new DrawerModel(R.drawable.stretching, "Activity"));
         modelList.add(new DrawerModel(R.drawable.coins, "QCoins"));
         modelList.add(new DrawerModel(R.drawable.payment_method, "Payment Method"));
         modelList.add(new DrawerModel(R.drawable.ic_friends, "Friends"));

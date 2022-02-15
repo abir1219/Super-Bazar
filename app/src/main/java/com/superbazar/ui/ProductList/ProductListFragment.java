@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
@@ -34,12 +35,25 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     FragmentProductListBinding binding;
     List<ProductListModel> modelList;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try{
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        }catch (NullPointerException e){}
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProductListBinding.inflate(inflater, container, false);
+        try{
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        }catch (NullPointerException e){}
+
         BtnClick();
         //Bundle bundle = getArguments();
         //Log.d("ID","dsasda"+bundle.getString("id"));

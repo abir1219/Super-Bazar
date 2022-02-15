@@ -1,19 +1,24 @@
 package com.superbazar.ui.ProductDetails;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ablanco.zoomy.TapListener;
+import com.ablanco.zoomy.Zoomy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.superbazar.MainActivity;
@@ -34,14 +39,59 @@ import java.util.List;
 public class ProductDetailsFragment extends Fragment implements View.OnClickListener {
     FragmentProductDetailsBinding binding;
     List<SliderModel> modelList;
+    String imageLink = "";
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        } catch (NullPointerException e) {
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false);
+        try {
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        } catch (NullPointerException e) {
+        }
         BtnClick();
         loadProduct();
+
+        Zoomy.Builder builder = new Zoomy.Builder(getActivity())
+                .target(binding.sliderView)
+                .animateZooming(false)
+                .enableImmersiveMode(false)
+                .tapListener(new TapListener() {
+                    @Override
+                    public void onTap(View v) {
+
+                    }
+                });
+        builder.register();
+
+        binding.tvViewImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent imageIntent = new Intent(getActivity(),ViewImageActivity.class);
+                imageIntent.putExtra("image",imageLink);
+                imageIntent.putExtra("id",getArguments().getString("id"));
+                startActivity(imageIntent);
+                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);*/
+
+                Bundle bundle = new Bundle();
+                bundle.putString("image",imageLink);
+                bundle.putString("id",getArguments().getString("id"));
+                Navigation.findNavController(view).navigate(R.id.nav_product_details_to_view_image,bundle);
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -64,10 +114,11 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         JSONArray array = object.getJSONArray("ProductFiles");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject obj = array.getJSONObject(i);
-                            String image = "https://smlawb.org/superbazaar/web/uploads/product/"+obj.getString("ProductFileName");
+                            String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
+                            imageLink = image;
                             modelList.add(new SliderModel(image));
                         }
-                        SliderAdapter adapter = new SliderAdapter(modelList,getActivity());
+                        SliderAdapter adapter = new SliderAdapter(modelList, getActivity());
                         binding.sliderView.setSliderAdapter(adapter);
                         binding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                         binding.sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);

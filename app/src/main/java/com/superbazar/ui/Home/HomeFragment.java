@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.superbazar.ui.Home.Adapter.BannerAdapter;
@@ -44,10 +45,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<ProductModel> bestSellerProductModelList;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        try{
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.VISIBLE);
+        }catch (NullPointerException e){}
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        try{
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.VISIBLE);
+        }catch (NullPointerException e){}
         BtnClick();
         setLayout();
         loadSlider();
