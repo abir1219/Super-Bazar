@@ -37,6 +37,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context).load(modelList.get(position).getImage()).into(holder.productImage);
         holder.productName.setText(modelList.get(position).getName());
+        holder.shpPrice.setText("₹ "+modelList.get(position).getShopPrice());
+        holder.actPrice.setText("₹ "+modelList.get(position).getActualPrice());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,11 +58,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView productImage;
-        TextView productName;
+        TextView productName,shpPrice,actPrice;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
+            shpPrice = itemView.findViewById(R.id.shpPrice);
+            actPrice = itemView.findViewById(R.id.actPrice);
         }
     }
 }
