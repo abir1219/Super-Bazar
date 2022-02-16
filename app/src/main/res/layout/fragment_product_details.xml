@@ -170,7 +170,6 @@
                 android:id="@+id/llDetails"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
                 android:orientation="vertical"
                 tools:context="zairacreations.badalibazar.Fragment.ProductDetailsFragment">
 
