@@ -39,6 +39,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.productName.setText(modelList.get(position).getName());
         holder.shpPrice.setText("₹ "+modelList.get(position).getShopPrice());
         holder.actPrice.setText("₹ "+modelList.get(position).getActualPrice());
+        holder.categoryName.setText(modelList.get(position).getCategoryName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,13 +59,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView productImage;
-        TextView productName,shpPrice,actPrice;
+        TextView productName,shpPrice,actPrice,categoryName;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
             shpPrice = itemView.findViewById(R.id.shpPrice);
             actPrice = itemView.findViewById(R.id.actPrice);
+            categoryName = itemView.findViewById(R.id.categoryName);
         }
     }
 }

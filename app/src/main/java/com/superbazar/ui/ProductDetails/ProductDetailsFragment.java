@@ -5,11 +5,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ablanco.zoomy.TapListener;
 import com.ablanco.zoomy.Zoomy;
@@ -25,8 +29,12 @@ import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentProductDetailsBinding;
+import com.superbazar.ui.Home.Adapter.ProductAdapter;
+import com.superbazar.ui.Home.Model.ProductModel;
 import com.superbazar.ui.ProductDetails.Adapter.SliderAdapter;
 import com.superbazar.ui.ProductDetails.Model.SliderModel;
+import com.superbazar.ui.ProductList.Adapter.ProductListAdapter;
+import com.superbazar.ui.ProductList.Model.ProductListModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +48,9 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     FragmentProductDetailsBinding binding;
     List<SliderModel> modelList;
     String imageLink = "";
+    String categoryId = "";
+
+    List<ProductModel> prodmodelList;
 
     @Override
     public void onResume() {
@@ -61,6 +72,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             navBar.setVisibility(View.GONE);
         } catch (NullPointerException e) {
         }
+        setLayout();
         BtnClick();
         loadProduct();
 
@@ -86,13 +98,60 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);*/
 
                 Bundle bundle = new Bundle();
-                bundle.putString("image",imageLink);
-                bundle.putString("id",getArguments().getString("id"));
-                Navigation.findNavController(view).navigate(R.id.nav_product_details_to_view_image,bundle);
+                bundle.putString("image", imageLink);
+                bundle.putString("id", getArguments().getString("id"));
+                Navigation.findNavController(view).navigate(R.id.nav_product_details_to_view_image, bundle);
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void setLayout() {
+        binding.rvFeaturesPro.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
+    }
+
+    private void loadRelatedProduct(String categoryId) {
+        prodmodelList = new ArrayList<>();
+        String api = Urls.CATEGORYWISEPRODCUTDETAILS + "?id=" + categoryId;
+        Log.d("API RES", "API: " + api);
+        StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("RESPONSE_RELATE", response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getString("status").equals("1")) {
+                        JSONArray jsonArray = object.getJSONArray("results");
+                        for(int i=0;i<jsonArray.length();i++){
+                            JSONObject jobj = jsonArray.getJSONObject(i);
+                            String ProductId = jobj.getString("ProductId");
+                            String ProductName = jobj.getString("ProductName");
+                            String categoryName = jobj.getString("CategoryName");
+                            String ProductShortDescription = jobj.getString("ProductShortDescription");
+                            String ProductMarketPrice = jobj.getString("ProductMarketPrice");
+                            String ProductSellingPrice = jobj.getString("ProductSellingPrice");
+                            JSONArray array = jobj.getJSONArray("ProductFiles");
+                            //for(int i=0;i<array.length();i++){}
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            String productImage = "https://smlawb.org/superbazaar/web/uploads/product/" + jsonObject.getString("ProductFileName");
+                            prodmodelList.add(new ProductModel(ProductId,ProductName,productImage,ProductMarketPrice,ProductSellingPrice,categoryName));
+                        }
+                    }
+                    ProductAdapter adapter = new ProductAdapter(prodmodelList,getActivity());
+                    binding.rvFeaturesPro.setAdapter(adapter);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void loadProduct() {
@@ -105,6 +164,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
                         JSONObject object = jsonObject.getJSONObject("results");
+                        categoryId = object.getString("CategoryId");
+                        //Toast.makeText(getActivity(), "categoryId: "+categoryId+",CategoryId"+object.getString("CategoryId"), Toast.LENGTH_SHORT).show();
                         binding.tvPrice.setText("₹ " + object.getString("ProductMarketPrice"));
                         binding.tvOffPrice.setText("₹ " + object.getString("ProductSellingPrice"));
                         binding.tvProductName.setText(object.getString("ProductName"));
@@ -123,6 +184,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         binding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                         binding.sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
                         binding.sliderView.startAutoCycle();
+
+                        loadRelatedProduct(categoryId);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

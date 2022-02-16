@@ -87,13 +87,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             String ProductName = object.getString("ProductName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
+                            String CategoryName = object.getString("CategoryName");
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             //Log.d("SELLER_jsonArray",jsonArray.toString());
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +
                                     obj.getString("ProductFileName");
 
-                            bestSellerProductModelList.add(new ProductModel(ProductId,ProductName,ProductFileName,ProductMarketPrice,ProductSellingPrice));
+                            bestSellerProductModelList.add(new ProductModel(ProductId,ProductName,ProductFileName,ProductMarketPrice,ProductSellingPrice,CategoryName));
                         }
                         ProductAdapter adapter = new ProductAdapter(bestSellerProductModelList,getActivity());
                         binding.rvBestSellerProduct.setAdapter(adapter);
@@ -125,6 +126,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             JSONObject object = array.getJSONObject(i);
                             String ProductId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
+                            String CategoryName = object.getString("CategoryName");
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
@@ -132,7 +134,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +
                                     obj.getString("ProductFileName");
 
-                            productModelList.add(new ProductModel(ProductId,ProductName,ProductFileName,ProductMarketPrice,ProductSellingPrice));
+                            productModelList.add(new ProductModel(ProductId,ProductName,ProductFileName,ProductMarketPrice,ProductSellingPrice,CategoryName));
                         }
                         ProductAdapter adapter = new ProductAdapter(productModelList,getActivity());
                         binding.rvNewArrivalProduct.setAdapter(adapter);
