@@ -41,4 +41,11 @@ public class Urls {
      */
     public static String BEST_SELLER_PRODUCT = BASE_URL + "product-by-best-seller";
 
+    /*
+    Function: webuser
+    Method: POST
+    Parameter : WebUserIP,WebUserPhone,WebUserEmail,WebUserFullName,WebUserName,WebUserPassword
+    */
+    public static String WEBUSER = BASE_URL + "webuser";
+
 }
