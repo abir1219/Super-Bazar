@@ -1,5 +1,6 @@
 package com.superbazar.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -11,15 +12,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.superbazar.Helper.ManageLoginData;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.ActivityRegBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegActivity extends AppCompatActivity implements View.OnClickListener{
     ActivityRegBinding binding;
@@ -93,18 +102,44 @@ public class RegActivity extends AppCompatActivity implements View.OnClickListen
                 "&WebUserName="+binding.etUserName.getText().toString()+"&WebUserPassword="+binding.etPassword.getText().toString();
 
         Log.d("REG_RES",api);
-        StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WEBUSER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
                 Log.d("REG_RESPONSE",response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        Toast.makeText(RegActivity.this, "User Registration Successful", Toast.LENGTH_SHORT).show();
+                        String userId = object.getString("userId");
+                        String name = object.getString("name");
+                        String phone = object.getString("phone");
+                        String email = object.getString("email");
+                        ManageLoginData.addLoginData(userId,name,email,phone);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
             }
-        });
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("WebUserIP",WebUserIP);
+                body.put("WebUserPhone",binding.etPhone.getText().toString());
+                body.put("WebUserEmail",binding.etEmail.getText().toString());
+                body.put("WebUserFullName",binding.etName.getText().toString());
+                body.put("WebUserName",binding.etUserName.getText().toString());
+                body.put("WebUserPassword",binding.etPassword.getText().toString());
+                return body;
+            }
+        };
         Volley.newRequestQueue(RegActivity.this).add(sr);
     }
 }
