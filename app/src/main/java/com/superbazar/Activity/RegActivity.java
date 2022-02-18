@@ -93,7 +93,7 @@ public class RegActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void registerUser() {
-        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String WebUserIP = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
@@ -111,11 +111,15 @@ public class RegActivity extends AppCompatActivity implements View.OnClickListen
                     JSONObject object = new JSONObject(response);
                     if(object.getString("status").equals("1")){
                         Toast.makeText(RegActivity.this, "User Registration Successful", Toast.LENGTH_SHORT).show();
-                        String userId = object.getString("userId");
-                        String name = object.getString("name");
-                        String phone = object.getString("phone");
-                        String email = object.getString("email");
+                        JSONObject obj = object.getJSONObject("data");
+                        String userId = obj.getString("userId");
+                        String name = obj.getString("name");
+                        String phone = obj.getString("phone");
+                        String email = obj.getString("email");
                         ManageLoginData.addLoginData(userId,name,email,phone);
+                        startActivity(new Intent(RegActivity.this,MainActivity.class));
+                        overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
