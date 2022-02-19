@@ -48,4 +48,11 @@ public class Urls {
     */
     public static String WEBUSER = BASE_URL + "webuser";
 
+    /*
+    Function: Cart
+    Method: POST
+    Parameter : WebUserId,Type,ProductId,Quantity
+    */
+    public static String CART = BASE_URL + "Cart";
+
 }

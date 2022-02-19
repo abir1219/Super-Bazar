@@ -1,8 +1,10 @@
 package com.superbazar.ui.ProductDetails;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.ablanco.zoomy.TapListener;
 import com.ablanco.zoomy.Zoomy;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,8 +28,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
+import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
+import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentProductDetailsBinding;
 import com.superbazar.ui.Home.Adapter.ProductAdapter;
@@ -41,7 +46,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ProductDetailsFragment extends Fragment implements View.OnClickListener {
@@ -49,6 +56,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     List<SliderModel> modelList;
     String imageLink = "";
     String categoryId = "";
+    ProgressDialog progressDialog;
+    String productId = "";
 
     List<ProductModel> prodmodelList;
 
@@ -108,7 +117,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     }
 
     private void setLayout() {
-        binding.rvFeaturesPro.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
+        binding.rvFeaturesPro.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
     }
 
     private void loadRelatedProduct(String categoryId) {
@@ -123,9 +132,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject object = new JSONObject(response);
                     if (object.getString("status").equals("1")) {
                         JSONArray jsonArray = object.getJSONArray("results");
-                        for(int i=0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jobj = jsonArray.getJSONObject(i);
                             String ProductId = jobj.getString("ProductId");
+                            productId = ProductId;
                             String ProductName = jobj.getString("ProductName");
                             String categoryName = jobj.getString("CategoryName");
                             String ProductShortDescription = jobj.getString("ProductShortDescription");
@@ -135,10 +145,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                             //for(int i=0;i<array.length();i++){}
                             JSONObject jsonObject = array.getJSONObject(0);
                             String productImage = "https://smlawb.org/superbazaar/web/uploads/product/" + jsonObject.getString("ProductFileName");
-                            prodmodelList.add(new ProductModel(ProductId,ProductName,productImage,ProductMarketPrice,ProductSellingPrice,categoryName));
+                            prodmodelList.add(new ProductModel(ProductId, ProductName, productImage, ProductMarketPrice, ProductSellingPrice, categoryName));
                         }
                     }
-                    ProductAdapter adapter = new ProductAdapter(prodmodelList,getActivity());
+                    ProductAdapter adapter = new ProductAdapter(prodmodelList, getActivity());
                     binding.rvFeaturesPro.setAdapter(adapter);
 
                 } catch (JSONException e) {
@@ -155,11 +165,14 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     }
 
     private void loadProduct() {
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         modelList = new ArrayList<>();
         String api = Urls.PRODUCT_DETAILS + "?id=" + getArguments().getString("id");
         StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
@@ -194,14 +207,18 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Getting some troubles.", Toast.LENGTH_SHORT).show();
             }
         });
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void BtnClick() {
+        progressDialog = new ProgressDialog(getActivity());
         binding.llMenu.setOnClickListener(this);
+        binding.llAddtoCart.setOnClickListener(this);
+        binding.llAddtoWishlist.setOnClickListener(this);
     }
 
     @Override
@@ -210,6 +227,90 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
                 break;
+            case R.id.llAddtoCart:
+                addToCart();
+                break;
+            case R.id.llAddtoWishlist:
+                addToWishlist();
+                break;
         }
+    }
+
+    private void addToWishlist() {
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
+                body.put("Type", "wishlist");
+                body.put("ProductId", productId);
+                body.put("Quantity", binding.tvCount.getText().toString());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+    private void addToCart() {
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
+                body.put("Type", "cart");
+                body.put("ProductId", productId);
+                body.put("Quantity", binding.tvCount.getText().toString());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 }
