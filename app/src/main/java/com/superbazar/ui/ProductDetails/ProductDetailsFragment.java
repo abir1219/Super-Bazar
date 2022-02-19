@@ -124,7 +124,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         prodmodelList = new ArrayList<>();
         String api = Urls.CATEGORYWISEPRODCUTDETAILS + "?id=" + categoryId;
         Log.d("API RES", "API: " + api);
-        StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CATEGORYWISEPRODCUTDETAILS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("RESPONSE_RELATE", response);
@@ -160,7 +160,15 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> body = new HashMap<>();
+                body.put("id",categoryId);
+                return body;
+            }
+        };
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
@@ -168,8 +176,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         progressDialog.setMessage("Loading...");
         progressDialog.show();
         modelList = new ArrayList<>();
-        String api = Urls.PRODUCT_DETAILS + "?id=" + getArguments().getString("id");
-        StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.PRODUCT_DETAILS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -210,7 +217,15 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Getting some troubles.", Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id",getArguments().getString("id"));
+                return body;
+            }
+        };
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
@@ -219,6 +234,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         binding.llMenu.setOnClickListener(this);
         binding.llAddtoCart.setOnClickListener(this);
         binding.llAddtoWishlist.setOnClickListener(this);
+        binding.ivPlus.setOnClickListener(this);
+        binding.ivMinus.setOnClickListener(this);
     }
 
     @Override
@@ -232,6 +249,18 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.llAddtoWishlist:
                 addToWishlist();
+                break;
+            case R.id.ivPlus:
+                int qty = Integer.parseInt(binding.tvCount.getText().toString());
+                qty++;
+                binding.tvCount.setText(""+qty);
+                break;
+            case R.id.ivMinus:
+                int qt = Integer.parseInt(binding.tvCount.getText().toString());
+                if(qt > 1){
+                    qt--;
+                }
+                binding.tvCount.setText(""+qt);
                 break;
         }
     }
@@ -303,6 +332,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                Log.d("ID_RES",YoDB.getPref().read(Constants.ID, ""));
                 Map<String, String> body = new HashMap<>();
                 body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
                 body.put("Type", "cart");

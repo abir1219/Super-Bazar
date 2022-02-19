@@ -12,6 +12,20 @@
         android:label="Home"
         tools:layout="@layout/fragment_home">
 
+        <action android:id="@+id/nav_home_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_home_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
         <action android:id="@+id/nav_home_to_product_list"
             app:destination="@+id/navigation_productList"
             app:popEnterAnim="@anim/fade_in_animation"
@@ -84,6 +98,18 @@
             app:exitAnim="@anim/fade_out_animation"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.superbazar.ui.Cart.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart"/>
+
+    <fragment
+        android:id="@+id/navigation_wishlist"
+        android:name="com.superbazar.ui.Wishlist.WishlistFragment"
+        android:label="Wishlist"
+        tools:layout="@layout/fragment_wishlist"/>
 
 
 </navigation>

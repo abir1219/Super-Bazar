@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Cart.CartFragment">
+    tools:context=".ui.Wishlist.WishlistFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -174,7 +174,7 @@
                 android:fillViewport="true">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCart"
+                    android:id="@+id/rvWishlist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

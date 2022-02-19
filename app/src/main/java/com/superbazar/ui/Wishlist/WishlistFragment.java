@@ -1,4 +1,4 @@
-package com.superbazar.ui.Cart;
+package com.superbazar.ui.Wishlist;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,9 +24,11 @@ import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
-import com.superbazar.databinding.FragmentCartBinding;
+import com.superbazar.databinding.FragmentWishlistBinding;
 import com.superbazar.ui.Cart.Adapter.CartAdapter;
 import com.superbazar.ui.Cart.Model.CartModel;
+import com.superbazar.ui.Wishlist.Adapter.WishlistAdapter;
+import com.superbazar.ui.Wishlist.Model.WishlistModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,10 +39,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CartFragment extends Fragment implements View.OnClickListener{
-    FragmentCartBinding binding;
+public class WishlistFragment extends Fragment implements View.OnClickListener {
+    FragmentWishlistBinding binding;
     ProgressDialog progressDialog;
-    List<CartModel> modelList;
+    List<WishlistModel> modelList;
 
     @Override
     public void onResume() {
@@ -56,7 +58,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentCartBinding.inflate(inflater,container,false);
+        binding = FragmentWishlistBinding.inflate(inflater,container,false);
         try {
             BottomNavigationView btnNav = getActivity().findViewById(R.id.bottom_nav);
             btnNav.setVisibility(View.GONE);
@@ -66,8 +68,12 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         progressDialog = new ProgressDialog(getActivity());
         setLayout();
         btnClick();
-        loadCart();
+        loadWishlist();
         return binding.getRoot();
+    }
+
+    private void setLayout() {
+        binding.rvWishlist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
     }
 
     private void btnClick() {
@@ -76,11 +82,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         binding.llWisth.setOnClickListener(this);
     }
 
-    private void setLayout() {
-        binding.rvCart.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
-    }
-
-    private void loadCart() {
+    private void loadWishlist() {
         modelList = new ArrayList<>();
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -101,10 +103,10 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");
 
-                            modelList.add(new CartModel(prodId,ProductName,ProductShortDescription,Quantity,"",ProductMarketPrice,ProductSellingPrice));
+                            modelList.add(new WishlistModel(prodId,ProductName,ProductShortDescription,Quantity,"",ProductMarketPrice,ProductSellingPrice));
                         }
-                        CartAdapter adapter = new CartAdapter(modelList,getActivity());
-                        binding.rvCart.setAdapter(adapter);
+                        WishlistAdapter adapter = new WishlistAdapter(modelList,getActivity());
+                        binding.rvWishlist.setAdapter(adapter);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -122,7 +124,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID,""));
-                body.put("type","cart");
+                body.put("type","wishlist");
                 return body;
             }
         };

@@ -3,6 +3,7 @@ package com.superbazar.ui.Home;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -230,6 +231,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void BtnClick() {
         binding.llMenu.setOnClickListener(this);
+        binding.llCart.setOnClickListener(this);
+        binding.llWisth.setOnClickListener(this);
     }
 
     @Override
@@ -237,6 +240,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llCart:
+                Navigation.findNavController(view).navigate(R.id.nav_home_to_cart);
+                break;
+            case R.id.llWisth:
+                Navigation.findNavController(view).navigate(R.id.nav_home_to_wishlist);
                 break;
         }
     }

@@ -49,10 +49,17 @@ public class Urls {
     public static String WEBUSER = BASE_URL + "webuser";
 
     /*
-    Function: Cart
+    Function: cart
     Method: POST
     Parameter : WebUserId,Type,ProductId,Quantity
     */
-    public static String CART = BASE_URL + "Cart";
+    public static String CART = BASE_URL + "cart";
+
+    /*
+    Function: cart-list
+    Method: POST
+    Parameter : id,type
+    */
+    public static String CART_LIST = BASE_URL + "cart-list";
 
 }
