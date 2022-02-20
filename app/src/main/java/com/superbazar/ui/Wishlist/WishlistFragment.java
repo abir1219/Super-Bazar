@@ -106,10 +106,10 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                         JSONArray array = jsonObject.getJSONArray("results");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
-                            String cartId = object.getString("cartId");
+                            String cartId = object.getString("CartId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
-                            String ProductShortDescription = object.getString("ProductShortDescription");
+                            String ProductShortDescription = object.getString("CategoryName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.superbazar.R;
 import com.superbazar.ui.Cart.CartFragment;
 import com.superbazar.ui.Wishlist.Model.WishlistModel;
@@ -38,8 +39,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTitle.setText(modelList.get(position).getProductName());
         holder.tvDetails.setText(modelList.get(position).getDesc());
-        holder.tvOffPrice.setText(modelList.get(position).getOffPrice());
+        holder.tvOffPrice.setText("₹ "+modelList.get(position).getOffPrice());
         holder.tvCount.setText(modelList.get(position).getQuantity());
+
+        Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
     }
 
     @Override

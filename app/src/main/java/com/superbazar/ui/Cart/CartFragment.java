@@ -107,7 +107,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                             String cartId = object.getString("CartId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
-                            String ProductShortDescription = "";//object.getString("ProductShortDescription");
+                            String ProductShortDescription = object.getString("CategoryName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");
