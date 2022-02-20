@@ -60,7 +60,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentWishlistBinding.inflate(inflater,container,false);
+        binding = FragmentWishlistBinding.inflate(inflater, container, false);
         try {
             BottomNavigationView btnNav = getActivity().findViewById(R.id.bottom_nav);
             btnNav.setVisibility(View.GONE);
@@ -70,10 +70,10 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
         progressDialog = new ProgressDialog(getActivity());
         setLayout();
         btnClick();
-        if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+        if (YoDB.getPref().read(Constants.ID, "").isEmpty()) {
             binding.llBeforeLogin.setVisibility(View.VISIBLE);
             binding.llAfterLogin.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.llAfterLogin.setVisibility(View.VISIBLE);
             binding.llBeforeLogin.setVisibility(View.GONE);
             loadWishlist();
@@ -82,7 +82,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setLayout() {
-        binding.rvWishlist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+        binding.rvWishlist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
     }
 
     private void btnClick() {
@@ -102,10 +102,11 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.getString("status").equals("1")){
+                    if (jsonObject.getString("status").equals("1")) {
                         JSONArray array = jsonObject.getJSONArray("results");
-                        for(int i=0;i< array.length();i++){
+                        for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
+                            String cartId = object.getString("cartId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
                             String ProductShortDescription = object.getString("ProductShortDescription");
@@ -113,9 +114,13 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");
 
-                            modelList.add(new WishlistModel(prodId,ProductName,ProductShortDescription,Quantity,"",ProductMarketPrice,ProductSellingPrice));
+                            JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
+
+                            modelList.add(new WishlistModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice));
                         }
-                        WishlistAdapter adapter = new WishlistAdapter(modelList,getActivity());
+                        WishlistAdapter adapter = new WishlistAdapter(modelList, getActivity());
                         binding.rvWishlist.setAdapter(adapter);
                     }
                 } catch (JSONException e) {
@@ -128,13 +133,13 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> body = new HashMap<>();
-                body.put("id", YoDB.getPref().read(Constants.ID,""));
-                body.put("type","wishlist");
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "wishlist");
                 return body;
             }
         };
@@ -143,13 +148,13 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.llMenu:
-                ((MainActivity)getActivity()).openDrawer();
+                ((MainActivity) getActivity()).openDrawer();
                 break;
             case R.id.llLogin:
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                 getActivity().finish();
                 break;
         }

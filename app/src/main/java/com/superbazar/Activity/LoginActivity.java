@@ -89,19 +89,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
+                Log.d("LOGIN RES",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.d("LOGIN RES",response);
-                    JSONObject object = jsonObject.getJSONObject("data");
-                    String WebUserId = object.getString("WebUserId");
-                    String name = object.getString("WebUserFullName");
-                    String WebUserEmail = object.getString("WebUserEmail");
-                    String WebUserPhone = object.getString("WebUserPhone");
+                    if(jsonObject.getString("status").equals("1")){
+                        JSONObject object = jsonObject.getJSONObject("data");
+                        String WebUserId = object.getString("WebUserId");
+                        String name = object.getString("WebUserFullName");
+                        String WebUserEmail = object.getString("WebUserEmail");
+                        String WebUserPhone = object.getString("WebUserPhone");
 
-                    ManageLoginData.addLoginData(WebUserId,name,WebUserEmail,WebUserPhone);
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
-                    finish();
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                        ManageLoginData.addLoginData(WebUserId,name,WebUserEmail,WebUserPhone);
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                        finish();
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, "Getting some troubles", Toast.LENGTH_SHORT).show();
             }
         }){
             @Nullable
@@ -119,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Map<String,String> body = new HashMap<>();
                 body.put("username",binding.etUsername.getText().toString());
                 body.put("password",binding.etPassword.getText().toString());
-                return super.getParams();
+                return body;
             }
         };
         Volley.newRequestQueue(LoginActivity.this).add(sr);

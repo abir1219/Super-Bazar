@@ -104,14 +104,19 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                         JSONArray array = jsonObject.getJSONArray("results");
                         for(int i=0;i< array.length();i++){
                             JSONObject object = array.getJSONObject(i);
+                            String cartId = object.getString("CartId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
-                            String ProductShortDescription = object.getString("ProductShortDescription");
+                            String ProductShortDescription = "";//object.getString("ProductShortDescription");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");
 
-                            modelList.add(new CartModel(prodId,ProductName,ProductShortDescription,Quantity,"",ProductMarketPrice,ProductSellingPrice));
+                            JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            String image = "https://smlawb.org/superbazaar/web/uploads/product/"+obj.getString("ProductFileName");
+
+                            modelList.add(new CartModel(cartId,prodId,ProductName,ProductShortDescription,Quantity,image,ProductMarketPrice,ProductSellingPrice));
                         }
                         CartAdapter adapter = new CartAdapter(modelList,getActivity());
                         binding.rvCart.setAdapter(adapter);
