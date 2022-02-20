@@ -1,5 +1,6 @@
 package com.superbazar.ui.Home;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<CategoryModel> categoryModelList;
     ArrayList<ProductModel> productModelList;
     ArrayList<ProductModel> bestSellerProductModelList;
+    ProgressDialog progressDialog;
 
     @Override
     public void onResume() {
@@ -65,6 +67,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }catch (NullPointerException e){}
         BtnClick();
         setLayout();
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
         loadSlider();
         loadCategory();
         loadNewArrivalProducts();
@@ -77,6 +81,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.BEST_SELLER_PRODUCT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressDialog.dismiss();
                 //Log.d("Best_Seller_RES",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -195,6 +200,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadSlider() {
+        progressDialog.show();
         bannerModelList = new ArrayList<>();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.SLIDER, new Response.Listener<String>() {
             @Override

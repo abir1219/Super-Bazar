@@ -45,16 +45,19 @@ public class RegActivity extends AppCompatActivity implements View.OnClickListen
 
     private void btnClick() {
         binding.btSignUp.setOnClickListener(this);
+        binding.llLogin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btSignUp:
-                /*startActivity(new Intent(RegActivity.this, MainActivity.class));
-                overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
-                finish();*/
                 checkData();
+                break;
+            case R.id.llLogin:
+                startActivity(new Intent(RegActivity.this, LoginActivity.class));
+                overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                finish();
                 break;
         }
     }

@@ -2,6 +2,7 @@ package com.superbazar.ui.ProductList;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,7 +31,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductListFragment extends Fragment implements View.OnClickListener {
     FragmentProductListBinding binding;
@@ -67,7 +71,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         modelList = new ArrayList<>();
         String api = Urls.CATEGORYWISEPRODCUTDETAILS + "?id=" + getArguments().getString("id");
         Log.d("API RES", "API: " + api);
-        StringRequest sr = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CATEGORYWISEPRODCUTDETAILS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("RESPONSE", response);
@@ -102,7 +106,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
             public void onErrorResponse(VolleyError error) {
 
             }
-        })/*{
+        }){
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -111,7 +115,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                 body.put("id",getArguments().getString("id"));
                 return body;
             }
-        }*/;
+        };
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 

@@ -1,6 +1,7 @@
 package com.superbazar.ui.Cart;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.superbazar.Activity.LoginActivity;
 import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
@@ -66,7 +68,14 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         progressDialog = new ProgressDialog(getActivity());
         setLayout();
         btnClick();
-        loadCart();
+        if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+            binding.llBeforeLogin.setVisibility(View.VISIBLE);
+            binding.llAfterLogin.setVisibility(View.GONE);
+        }else{
+            binding.llAfterLogin.setVisibility(View.VISIBLE);
+            binding.llBeforeLogin.setVisibility(View.GONE);
+            loadCart();
+        }
         return binding.getRoot();
     }
 
@@ -74,6 +83,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.llLogin.setOnClickListener(this);
     }
 
     private void setLayout() {
@@ -134,6 +144,12 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.llMenu:
                 ((MainActivity)getActivity()).openDrawer();
+                break;
+
+            case R.id.llLogin:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().finish();
                 break;
         }
     }

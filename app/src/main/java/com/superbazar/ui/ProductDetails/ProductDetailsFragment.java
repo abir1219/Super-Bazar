@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
+import com.superbazar.Activity.LoginActivity;
 import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
@@ -245,10 +246,22 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 ((MainActivity) getActivity()).openDrawer();
                 break;
             case R.id.llAddtoCart:
-                addToCart();
+                if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
+                    getActivity().finish();
+                }else {
+                    addToCart();
+                }
                 break;
             case R.id.llAddtoWishlist:
-                addToWishlist();
+                if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
+                    getActivity().finish();
+                }else{
+                    addToWishlist();
+                }
                 break;
             case R.id.ivPlus:
                 int qty = Integer.parseInt(binding.tvCount.getText().toString());

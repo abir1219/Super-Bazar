@@ -62,4 +62,18 @@ public class Urls {
     */
     public static String CART_LIST = BASE_URL + "cart-list";
 
+    /*
+    Function: logout
+    Method: POST
+    Parameter : id
+    */
+    public static String LOGOUT = BASE_URL + "logout";
+
+    /*
+   Function: login
+   Method: POST
+   Parameter : username,password
+   */
+    public static String LOGIN = BASE_URL + "login";
+
 }

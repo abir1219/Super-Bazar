@@ -37,14 +37,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
-                    intent = new Intent(SplashScreenActivity.this, RegActivity.class);
-                    overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
+                    intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                     finish();
                 }else{
                     intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                    overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                     finish();
                 }
             }

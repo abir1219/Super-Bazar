@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +19,20 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.superbazar.Activity.LoginActivity;
+import com.superbazar.Activity.RegActivity;
 import com.superbazar.Adapter.DrawerAdapter;
+import com.superbazar.Helper.ManageLoginData;
+import com.superbazar.Helper.YoDB;
 import com.superbazar.Model.DrawerModel;
+import com.superbazar.Utils.Constants;
+import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.ActivityMainBinding;
 
 import org.json.JSONArray;
@@ -52,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         }
         setDefaultView();
         setDrawerMenu();
+        binding.navProfileName.setText(YoDB.getPref().read(Constants.NAME,""));
+        binding.navProfileEmail.setText(YoDB.getPref().read(Constants.EMAIL,""));
         //setVersion();
         /*loadUserDetails();
         loadProfile();*/
@@ -146,6 +161,13 @@ public class MainActivity extends AppCompatActivity {
         modelList = new ArrayList<>();
 
         modelList.add(new DrawerModel(R.drawable.ic_baseline_home_24, "Home"));
+        modelList.add(new DrawerModel(R.drawable.bag, "Cart"));
+        modelList.add(new DrawerModel(R.drawable.love, "Wishlist"));
+        if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+            modelList.add(new DrawerModel(R.drawable.logout, "Login"));
+        }else{
+            modelList.add(new DrawerModel(R.drawable.logout, "Logout"));
+        }
         /*modelList.add(new DrawerModel(R.drawable.stretching, "Activity"));
         modelList.add(new DrawerModel(R.drawable.coins, "QCoins"));
         modelList.add(new DrawerModel(R.drawable.payment_method, "Payment Method"));
@@ -173,9 +195,59 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.navigation_home, bundle, navBuilder.build());//This will open
                         openDrawer();
                         break;
+                    case 1:
+                        navController.navigate(R.id.navigation_cart, bundle, navBuilder.build());//This will open
+                        openDrawer();
+                        break;
+
+                    case 2:
+                        navController.navigate(R.id.navigation_wishlist, bundle, navBuilder.build());//This will open
+                        openDrawer();
+                        break;
+
+                    case 3:
+                        if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                            finish();
+                        }else{
+                            logout();
+                        }
+                        openDrawer();
+                        break;
 
 
                 }
+            }
+
+            private void logout() {
+                ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Logging Out");
+                progressDialog.show();
+                StringRequest sr = new StringRequest(Request.Method.POST, Urls.LOGOUT, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        ManageLoginData.clearLoginData();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                        finish();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }){
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> body = new HashMap<>();
+                        body.put("id", YoDB.getPref().read(Constants.ID,""));
+                        return body;
+                    }
+                };
+                Volley.newRequestQueue(MainActivity.this).add(sr);
             }
         });
     }
