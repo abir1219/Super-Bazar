@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
+import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentProductListBinding;
 import com.superbazar.ui.ProductList.Adapter.ProductListAdapter;
@@ -63,8 +66,86 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         //Log.d("ID","dsasda"+bundle.getString("id"));
         //Toast.makeText(getActivity(), "ID:"+bundle.getString("id"), Toast.LENGTH_SHORT).show();
         setLayout();
+        loadCartCount();
+        loadWishlistCount();
         loadProductList();
         return binding.getRoot();
+    }
+
+    private void loadCartCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvcartBadge.setVisibility(View.VISIBLE);
+                            binding.tvcartBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvcartBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvcartBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "cart");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+    private void loadWishlistCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvwishBadge.setVisibility(View.VISIBLE);
+                            binding.tvwishBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvwishBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvwishBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "wishlist");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void loadProductList() {
@@ -125,6 +206,8 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
     private void BtnClick() {
         binding.llMenu.setOnClickListener(this);
+        binding.llCart.setOnClickListener(this);
+        binding.llWisth.setOnClickListener(this);
     }
 
     @Override
@@ -132,6 +215,12 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         switch (view.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llCart:
+                Navigation.findNavController(view).navigate(R.id.nav_productList_to_cart);
+                break;
+            case R.id.llWisth:
+                Navigation.findNavController(view).navigate(R.id.nav_productList_to_wishlist);
                 break;
         }
     }

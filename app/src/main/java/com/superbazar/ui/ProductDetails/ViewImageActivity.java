@@ -49,8 +49,8 @@ public class ViewImageActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id",getArguments().getString("id"));
-                Navigation.findNavController(view).navigate(R.id.nav_to_view_image_product_details,bundle);
+                bundle.putString("id", getArguments().getString("id"));
+                Navigation.findNavController(view).navigate(R.id.nav_to_view_image_product_details, bundle);
             }
         });
 

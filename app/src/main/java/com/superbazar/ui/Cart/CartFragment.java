@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +69,9 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         progressDialog = new ProgressDialog(getActivity());
         setLayout();
         btnClick();
+        loadCartCount();
+        loadWishlistCount();
+
         if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
             binding.llBeforeLogin.setVisibility(View.VISIBLE);
             binding.llAfterLogin.setVisibility(View.GONE);
@@ -79,11 +83,90 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         return binding.getRoot();
     }
 
+    private void loadCartCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvcartBadge.setVisibility(View.VISIBLE);
+                            binding.tvcartBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvcartBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvcartBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "cart");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+    private void loadWishlistCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvwishBadge.setVisibility(View.VISIBLE);
+                            binding.tvwishBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvwishBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvwishBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "wishlist");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+
     private void btnClick() {
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
         binding.llLogin.setOnClickListener(this);
+        binding.llCart.setOnClickListener(this);
+        binding.llWisth.setOnClickListener(this);
     }
 
     private void setLayout() {
@@ -120,6 +203,19 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                         }
                         CartAdapter adapter = new CartAdapter(modelList,getActivity());
                         binding.rvCart.setAdapter(adapter);
+
+                        adapter.setListner(new onDataRecived() {
+                            @Override
+                            public void onCallBack(String pos) {
+                                loadCartCount();
+                                loadWishlistCount();
+                                loadCart();
+                            }
+                        });
+                    }else{
+                        CartAdapter adapter = new CartAdapter(modelList, getActivity());
+                        binding.rvCart.setAdapter(adapter);
+                        //binding.llDataNotFound.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,6 +251,9 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
                 getActivity().finish();
+                break;
+            case R.id.llWisth:
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_wishlist);
                 break;
         }
     }

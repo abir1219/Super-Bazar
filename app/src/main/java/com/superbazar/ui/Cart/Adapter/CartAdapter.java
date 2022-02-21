@@ -1,21 +1,36 @@
 package com.superbazar.ui.Cart.Adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.superbazar.R;
+import com.superbazar.Utils.Urls;
 import com.superbazar.ui.Cart.CartFragment;
 import com.superbazar.ui.Cart.Model.CartModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<CartModel> modelList;
@@ -35,6 +50,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading...");
+
         holder.tvPName.setText(modelList.get(position).getProductName());
         holder.tvPDesc.setText(modelList.get(position).getDesc());
         holder.tvAmount.setText("₹ "+modelList.get(position).getOffPrice());
@@ -42,6 +60,42 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvCount.setText(modelList.get(position).getQuantity());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
+
+
+        holder.tvPRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringRequest sr = new StringRequest(Request.Method.POST, Urls.REMOVE_CART, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.show();
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            if(object.getString("status").equals("1")){
+                                Toast.makeText(context, "Remove Successfully", Toast.LENGTH_SHORT).show();
+                                onDataRecived.onCallBack(String.valueOf(position));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }){
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> body = new HashMap<>();
+                        body.put("id",modelList.get(position).getCartId());
+                        return body;
+                    }
+                };
+                Volley.newRequestQueue(context).add(sr);
+            }
+        });
     }
 
     @Override

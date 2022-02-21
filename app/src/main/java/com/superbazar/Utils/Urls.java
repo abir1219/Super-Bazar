@@ -76,4 +76,19 @@ public class Urls {
    */
     public static String LOGIN = BASE_URL + "login";
 
+
+    /*
+    Function: count-cart
+    Method: POST
+    Parameter : id,type
+    */
+    public static String CART_COUNT = BASE_URL + "count-cart";
+
+    /*
+    Function: remove-cart
+    Method: POST
+    Parameter : id
+    */
+    public static String REMOVE_CART = BASE_URL + "remove-cart";
+
 }

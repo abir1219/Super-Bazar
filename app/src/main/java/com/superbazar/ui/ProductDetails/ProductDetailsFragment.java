@@ -84,6 +84,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         }
         setLayout();
         BtnClick();
+        loadCartCount();
+        loadWishlistCount();
         loadProduct();
 
         Zoomy.Builder builder = new Zoomy.Builder(getActivity())
@@ -115,6 +117,82 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         });
 
         return binding.getRoot();
+    }
+
+    private void loadCartCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvcartBadge.setVisibility(View.VISIBLE);
+                            binding.tvcartBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvcartBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvcartBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "cart");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+    private void loadWishlistCount() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        if (Integer.parseInt(jsonObject.getString("count")) > 0) {
+                            binding.tvwishBadge.setVisibility(View.VISIBLE);
+                            binding.tvwishBadge.setText(jsonObject.getString("count"));
+                        } else {
+                            binding.tvwishBadge.setVisibility(View.GONE);
+                        }
+                    } else {
+                        binding.tvwishBadge.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
+                body.put("type", "wishlist");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void setLayout() {
@@ -237,6 +315,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         binding.llAddtoWishlist.setOnClickListener(this);
         binding.ivPlus.setOnClickListener(this);
         binding.ivMinus.setOnClickListener(this);
+        binding.llCart.setOnClickListener(this);
+        binding.llWisth.setOnClickListener(this);
     }
 
     @Override
@@ -274,6 +354,12 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     qt--;
                 }
                 binding.tvCount.setText(""+qt);
+                break;
+            case R.id.llCart:
+                Navigation.findNavController(view).navigate(R.id.nav_product_details_to_cart);
+                break;
+            case R.id.llWisth:
+                Navigation.findNavController(view).navigate(R.id.nav_product_details_to_wishlist);
                 break;
         }
     }
