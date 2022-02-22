@@ -367,7 +367,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     private void addToWishlist() {
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -375,6 +375,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject object = new JSONObject(response);
                     if(object.getString("status").equals("1")){
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        loadWishlistCount();
                     }else{
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                     }
@@ -394,9 +395,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
                 body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
-                body.put("Type", "wishlist");
                 body.put("ProductId", productId);
-                body.put("Quantity", binding.tvCount.getText().toString());
                 return body;
             }
         };
@@ -414,6 +413,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject object = new JSONObject(response);
                     if(object.getString("status").equals("1")){
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        loadCartCount();
                     }else{
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                     }
@@ -434,7 +434,6 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 Log.d("ID_RES",YoDB.getPref().read(Constants.ID, ""));
                 Map<String, String> body = new HashMap<>();
                 body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
-                body.put("Type", "cart");
                 body.put("ProductId", productId);
                 body.put("Quantity", binding.tvCount.getText().toString());
                 return body;

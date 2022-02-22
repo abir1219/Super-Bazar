@@ -65,10 +65,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvPRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 StringRequest sr = new StringRequest(Request.Method.POST, Urls.REMOVE_CART, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.show();
+                        progressDialog.dismiss();
                         try {
                             JSONObject object = new JSONObject(response);
                             if(object.getString("status").equals("1")){

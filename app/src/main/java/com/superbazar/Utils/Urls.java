@@ -51,9 +51,16 @@ public class Urls {
     /*
     Function: cart
     Method: POST
-    Parameter : WebUserId,Type,ProductId,Quantity
+    Parameter : WebUserId,ProductId,Quantity
     */
     public static String CART = BASE_URL + "cart";
+
+    /*
+    Function: add-to-wishlist
+    Method: POST
+    Parameter : WebUserId,ProductId
+    */
+    public static String WISHLIST = BASE_URL + "add-to-wishlist";
 
     /*
     Function: cart-list
