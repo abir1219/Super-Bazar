@@ -1,6 +1,7 @@
 package com.superbazar.ui.Wishlist.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.tvTitle.setText(modelList.get(position).getProductName());
         holder.tvDetails.setText(modelList.get(position).getDesc());
         holder.tvOffPrice.setText("₹ "+modelList.get(position).getOffPrice());
+
+        //Log.d("WISH_ID",modelList.get(position).getCartId());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
 
@@ -136,7 +139,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
-                body.put("id",modelList.get(position).getCartId());
+                body.put("id",modelList.get(position).getWishlistId());
                 return body;
             }
         };

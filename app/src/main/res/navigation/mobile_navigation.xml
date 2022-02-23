@@ -133,6 +133,13 @@
         android:label="Cart"
         tools:layout="@layout/fragment_cart">
 
+        <action android:id="@+id/nav_cart_to_product_details"
+            app:destination="@+id/navigation_product_details"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
         <action android:id="@+id/nav_cart_to_wishlist"
             app:destination="@+id/navigation_wishlist"
             app:popEnterAnim="@anim/fade_in_animation"

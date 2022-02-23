@@ -2,6 +2,7 @@ package com.superbazar.ui.Cart.Adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -60,6 +62,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvCount.setText(modelList.get(position).getQuantity());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id",modelList.get(position).getProductId());
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_product_details,bundle);
+            }
+        });
 
 
         holder.tvPRemove.setOnClickListener(new View.OnClickListener() {

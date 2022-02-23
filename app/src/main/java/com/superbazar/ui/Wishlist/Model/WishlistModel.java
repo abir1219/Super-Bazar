@@ -1,10 +1,11 @@
 package com.superbazar.ui.Wishlist.Model;
 
 public class WishlistModel {
-    String cartId,productId, productName,desc,  prodImage, actualPrice, offPrice;
+    String wishlistId,productId, productName,desc,  prodImage, actualPrice, offPrice;
 
-    public WishlistModel(String cartId,String productId, String productName,String desc,
+    public WishlistModel(String wishlistId,String productId, String productName,String desc,
                      String prodImage, String actualPrice, String offPrice) {
+        this.wishlistId = wishlistId;
         this.productId = productId;
         this.productName = productName;
         this.desc = desc;
@@ -13,8 +14,8 @@ public class WishlistModel {
         this.offPrice = offPrice;
     }
 
-    public String getCartId() {
-        return cartId;
+    public String getWishlistId() {
+        return wishlistId;
     }
 
     public String getProductId() {
