@@ -51,14 +51,14 @@ public class Urls {
     /*
     Function: cart
     Method: POST
-    Parameter : WebUserId,ProductId,Quantity
+    Parameter : id,ProductId,Quantity
     */
     public static String CART = BASE_URL + "cart";
 
     /*
     Function: add-to-wishlist
     Method: POST
-    Parameter : WebUserId,ProductId
+    Parameter : id,ProductId
     */
     public static String WISHLIST = BASE_URL + "add-to-wishlist";
 
@@ -68,6 +68,13 @@ public class Urls {
     Parameter : id,type
     */
     public static String CART_LIST = BASE_URL + "cart-list";
+
+    /*
+    Function: wishlist-list
+    Method: POST
+    Parameter : id
+    */
+    public static String WISHLIST_LIST = BASE_URL + "wishlist-list";
 
     /*
     Function: logout
@@ -87,9 +94,16 @@ public class Urls {
     /*
     Function: count-cart
     Method: POST
-    Parameter : id,type
+    Parameter : id
     */
     public static String CART_COUNT = BASE_URL + "count-cart";
+
+    /*
+    Function: count-wishlist
+    Method: POST
+    Parameter : id
+    */
+    public static String WISHLIST_COUNT = BASE_URL + "count-wishlist";
 
     /*
     Function: remove-cart
@@ -97,5 +111,12 @@ public class Urls {
     Parameter : id
     */
     public static String REMOVE_CART = BASE_URL + "remove-cart";
+
+    /*
+    Function: remove-wishlist
+    Method: POST
+    Parameter : id
+    */
+    public static String REMOVE_WISHLIST = BASE_URL + "remove-wishlist";
 
 }

@@ -7,17 +7,33 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.superbazar.Helper.YoDB;
 import com.superbazar.R;
+import com.superbazar.Utils.Constants;
+import com.superbazar.Utils.Urls;
 import com.superbazar.ui.Cart.CartFragment;
 import com.superbazar.ui.Wishlist.Model.WishlistModel;
 import com.superbazar.ui.Wishlist.WishlistFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
     List<WishlistModel> modelList;
@@ -40,9 +56,91 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.tvTitle.setText(modelList.get(position).getProductName());
         holder.tvDetails.setText(modelList.get(position).getDesc());
         holder.tvOffPrice.setText("₹ "+modelList.get(position).getOffPrice());
-        holder.tvCount.setText(modelList.get(position).getQuantity());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
+
+        holder.rlCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToCart(position);
+            }
+        });
+
+        holder.rvRemoveWish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeWishlist(position);
+            }
+        });
+    }
+
+    private void addToCart(int position) {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                        removeWishlist(position);
+                        onDataRecived.onCallBack(String.valueOf(position));
+                    }else{
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID,""));
+                body.put("ProductId", modelList.get(position).getProductId());
+                body.put("Quantity", "1");
+                return body;
+            }
+        };
+        Volley.newRequestQueue(context).add(sr);
+    }
+
+    public void removeWishlist(int position){
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.REMOVE_WISHLIST, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        onDataRecived.onCallBack(String.valueOf(position));
+                        Toast.makeText(context, "Wishlist Removed Successfully", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, object.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("id",modelList.get(position).getCartId());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(context).add(sr);
     }
 
     @Override

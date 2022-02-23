@@ -8,13 +8,13 @@
 
     <item
         android:id="@+id/navigation_category"
-        android:icon="@drawable/category"
-        android:title="Category" />
+        android:icon="@drawable/account"
+        android:title="Account" />
 
     <item
         android:id="@+id/navigation_notification"
-        android:icon="@drawable/notification"
-        android:title="Notification" />
+        android:icon="@drawable/list"
+        android:title="Order" />
 
 
     <!--<item

@@ -111,7 +111,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     }
 
     private void loadWishlistCount() {
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST_COUNT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

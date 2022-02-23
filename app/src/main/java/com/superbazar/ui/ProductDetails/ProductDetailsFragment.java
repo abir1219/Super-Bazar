@@ -158,7 +158,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     }
 
     private void loadWishlistCount() {
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST_COUNT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -394,7 +394,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
-                body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 body.put("ProductId", productId);
                 return body;
             }
@@ -433,7 +433,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Log.d("ID_RES",YoDB.getPref().read(Constants.ID, ""));
                 Map<String, String> body = new HashMap<>();
-                body.put("WebUserId", YoDB.getPref().read(Constants.ID, ""));
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 body.put("ProductId", productId);
                 body.put("Quantity", binding.tvCount.getText().toString());
                 return body;

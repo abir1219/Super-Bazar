@@ -123,7 +123,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadWishlistCount() {
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST_COUNT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -177,7 +177,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
         modelList = new ArrayList<>();
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_LIST, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST_LIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
@@ -187,22 +187,30 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                         JSONArray array = jsonObject.getJSONArray("results");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
-                            String cartId = object.getString("CartId");
+                            String WishlistId = object.getString("WishlistId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
                             String ProductShortDescription = object.getString("CategoryName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
-                            String Quantity = object.getString("Quantity");
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
 
-                            modelList.add(new WishlistModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice));
+                            modelList.add(new WishlistModel(WishlistId, prodId, ProductName, ProductShortDescription, image, ProductMarketPrice, ProductSellingPrice));
                         }
                         WishlistAdapter adapter = new WishlistAdapter(modelList, getActivity());
                         binding.rvWishlist.setAdapter(adapter);
+
+                        adapter.setListner(new onDataRecived() {
+                            @Override
+                            public void onCallBack(String pos) {
+                                loadCartCount();
+                                loadWishlistCount();
+                                loadWishlist();
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -220,7 +228,6 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID, ""));
-                body.put("type", "wishlist");
                 return body;
             }
         };

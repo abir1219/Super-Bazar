@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +115,6 @@ public class CartFragment extends Fragment implements View.OnClickListener{
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID, ""));
-                body.put("type", "cart");
                 return body;
             }
         };
@@ -122,7 +122,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
     }
 
     private void loadWishlistCount() {
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_COUNT, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.WISHLIST_COUNT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -231,9 +231,9 @@ public class CartFragment extends Fragment implements View.OnClickListener{
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                Log.d("RES_ID",YoDB.getPref().read(Constants.ID,""));
                 Map<String,String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID,""));
-                body.put("type","cart");
                 return body;
             }
         };
