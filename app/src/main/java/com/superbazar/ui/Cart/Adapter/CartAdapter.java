@@ -59,8 +59,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.tvPName.setText(modelList.get(position).getProductName());
         holder.tvPDesc.setText(modelList.get(position).getDesc());
-        holder.tvAmount.setText("₹ "+modelList.get(position).getOffPrice());
-        holder.tvS_Amount.setText("₹ "+modelList.get(position).getActualPrice());
+        holder.tvAmount.setText("₹ " + modelList.get(position).getOffPrice());
+        holder.tvS_Amount.setText("₹ " + modelList.get(position).getActualPrice());
         holder.tvCount.setText(modelList.get(position).getQuantity());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
@@ -69,8 +69,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id",modelList.get(position).getProductId());
-                Navigation.findNavController(v).navigate(R.id.nav_cart_to_product_details,bundle);
+                bundle.putString("id", modelList.get(position).getProductId());
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_product_details, bundle);
             }
         });
 
@@ -85,7 +85,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         progressDialog.dismiss();
                         try {
                             JSONObject object = new JSONObject(response);
-                            if(object.getString("status").equals("1")){
+                            if (object.getString("status").equals("1")) {
                                 Toast.makeText(context, "Remove Successfully", Toast.LENGTH_SHORT).show();
                                 onDataRecived.onCallBack(String.valueOf(position));
                             }
@@ -98,12 +98,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
                     }
-                }){
+                }) {
                     @Nullable
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> body = new HashMap<>();
-                        body.put("id",modelList.get(position).getCartId());
+                        Map<String, String> body = new HashMap<>();
+                        body.put("id", modelList.get(position).getCartId());
                         return body;
                     }
                 };
@@ -114,25 +114,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.ivPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int marketPrice = Integer.parseInt(modelList.get(position).getActualPrice());
+                int OffPrice = Integer.parseInt(modelList.get(position).getOffPrice());
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
                 qty++;
-                updateCart(position,qty);
+                holder.tvAmount.setText("₹ " + (OffPrice * qty));
+                holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
+                holder.tvCount.setText("" + qty);
+                updateCart(position, qty);
             }
         });
 
         holder.ivMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int marketPrice = Integer.parseInt(modelList.get(position).getActualPrice());
+                int OffPrice = Integer.parseInt(modelList.get(position).getOffPrice());
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
-                if(qty > 1){
+                if (qty > 1) {
                     qty--;
+                    holder.tvAmount.setText("₹ " + (OffPrice * qty));
+                    holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
+                    holder.tvCount.setText("" + qty);
                 }
-                updateCart(position,qty);
+                updateCart(position, qty);
             }
         });
     }
 
-    private void updateCart(int position,int qty) {
+    private void updateCart(int position, int qty) {
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.UPDATE_CART, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -147,14 +157,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
-                body.put("cart_id",modelList.get(position).getCartId());
-                body.put("quantity",String.valueOf(qty));
-                body.put("user_id", YoDB.getPref().read(Constants.ID,""));
+                body.put("cart_id", modelList.get(position).getCartId());
+                body.put("quantity", String.valueOf(qty));
+                body.put("user_id", YoDB.getPref().read(Constants.ID, ""));
                 return body;
             }
         };
