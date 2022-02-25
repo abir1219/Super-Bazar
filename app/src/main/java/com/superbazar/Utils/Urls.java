@@ -99,6 +99,13 @@ public class Urls {
     public static String CART_COUNT = BASE_URL + "count-cart";
 
     /*
+    Function: update-cart
+    Method: POST
+    Parameter : cart_id,user_id, quantity
+    */
+    public static String UPDATE_CART = BASE_URL + "update-cart";
+
+    /*
     Function: count-wishlist
     Method: POST
     Parameter : id

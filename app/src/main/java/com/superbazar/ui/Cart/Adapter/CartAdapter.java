@@ -22,7 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.superbazar.Helper.YoDB;
 import com.superbazar.R;
+import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
 import com.superbazar.ui.Cart.CartFragment;
 import com.superbazar.ui.Cart.Model.CartModel;
@@ -108,6 +110,55 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 Volley.newRequestQueue(context).add(sr);
             }
         });
+
+        holder.ivPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(holder.tvCount.getText().toString());
+                qty++;
+                updateCart(position,qty);
+            }
+        });
+
+        holder.ivMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int qty = Integer.parseInt(holder.tvCount.getText().toString());
+                if(qty > 1){
+                    qty--;
+                }
+                updateCart(position,qty);
+            }
+        });
+    }
+
+    private void updateCart(int position,int qty) {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.UPDATE_CART, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("cart_id",modelList.get(position).getCartId());
+                body.put("quantity",String.valueOf(qty));
+                body.put("user_id", YoDB.getPref().read(Constants.ID,""));
+                return body;
+            }
+        };
+        Volley.newRequestQueue(context).add(sr);
     }
 
     @Override
