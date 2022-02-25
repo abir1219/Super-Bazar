@@ -192,6 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:elevation="5dp"
+                android:layout_marginBottom="-3dp"
                 app:cardBackgroundColor="@color/baseColor"
                 app:cardCornerRadius="8dp"
                 android:visibility="visible">
