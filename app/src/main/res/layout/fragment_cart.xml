@@ -176,9 +176,10 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCart"
-                    android:layout_alignTop="@+id/cvPrice"
+                    android:layout_above="@+id/cvPrice"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
                     android:layout_marginRight="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -223,7 +224,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="₹ 100"/>
+                            android:text="₹ 0"/>
 
                     </LinearLayout>
 
