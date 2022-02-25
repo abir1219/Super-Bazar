@@ -183,17 +183,23 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    binding.tvTotal.setText("₹ "+jsonObject.getString("total"));
                     if(jsonObject.getString("status").equals("1")){
                         JSONArray array = jsonObject.getJSONArray("results");
+                        Log.d("ARRAY_RES",array.toString());
                         for(int i=0;i< array.length();i++){
                             JSONObject object = array.getJSONObject(i);
                             String cartId = object.getString("CartId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
                             String ProductShortDescription = object.getString("CategoryName");
-                            String ProductMarketPrice = object.getString("ProductMarketPrice");
-                            String ProductSellingPrice = object.getString("ProductSellingPrice");
                             String Quantity = object.getString("Quantity");
+
+                            int marketPrice = Integer.parseInt(object.getString("ProductMarketPrice")) * Integer.parseInt(Quantity);
+                            int sellingPrice = Integer.parseInt(object.getString("ProductSellingPrice")) * Integer.parseInt(Quantity);
+
+                            String ProductMarketPrice = String.valueOf(marketPrice);
+                            String ProductSellingPrice = String.valueOf(sellingPrice);
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);

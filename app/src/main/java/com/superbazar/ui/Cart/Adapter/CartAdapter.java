@@ -118,8 +118,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 int OffPrice = Integer.parseInt(modelList.get(position).getOffPrice());
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
                 qty++;
-                holder.tvAmount.setText("₹ " + (OffPrice * qty));
-                holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
+                //holder.tvAmount.setText("₹ " + (OffPrice * qty));
+                //holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
                 holder.tvCount.setText("" + qty);
                 updateCart(position, qty);
             }
@@ -133,11 +133,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
                 if (qty > 1) {
                     qty--;
-                    holder.tvAmount.setText("₹ " + (OffPrice * qty));
-                    holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
+                    //holder.tvAmount.setText("₹ " + (OffPrice * qty));
+                    //holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
                     holder.tvCount.setText("" + qty);
+                    updateCart(position, qty);
                 }
-                updateCart(position, qty);
             }
         });
     }
@@ -148,6 +148,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.getString("status").equals("1")){
+                        onDataRecived.onCallBack(String.valueOf(position));
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

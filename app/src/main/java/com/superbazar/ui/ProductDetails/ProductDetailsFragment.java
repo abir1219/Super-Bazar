@@ -211,10 +211,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject object = new JSONObject(response);
                     if (object.getString("status").equals("1")) {
                         JSONArray jsonArray = object.getJSONArray("results");
+                        Log.d("JSON_ARRAY",jsonArray.toString());
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jobj = jsonArray.getJSONObject(i);
                             String ProductId = jobj.getString("ProductId");
-                            productId = ProductId;
                             String ProductName = jobj.getString("ProductName");
                             String categoryName = jobj.getString("CategoryName");
                             String ProductShortDescription = jobj.getString("ProductShortDescription");
@@ -261,9 +261,12 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d("JSON_OBJ",response);
                     if (jsonObject.getString("status").equals("1")) {
                         JSONObject object = jsonObject.getJSONObject("results");
                         categoryId = object.getString("CategoryId");
+                        String ProductId = object.getString("ProductId");
+                        productId = ProductId;
                         //Toast.makeText(getActivity(), "categoryId: "+categoryId+",CategoryId"+object.getString("CategoryId"), Toast.LENGTH_SHORT).show();
                         binding.tvPrice.setText("₹ " + object.getString("ProductMarketPrice"));
                         binding.tvOffPrice.setText("₹ " + object.getString("ProductSellingPrice"));
@@ -432,6 +435,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Log.d("ID_RES",YoDB.getPref().read(Constants.ID, ""));
+                Log.d("productId",productId);
                 Map<String, String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 body.put("ProductId", productId);
