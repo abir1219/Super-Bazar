@@ -126,4 +126,11 @@ public class Urls {
     */
     public static String REMOVE_WISHLIST = BASE_URL + "remove-wishlist";
 
+    /*
+    Function: user-address
+    Method: POST
+    Parameter : user_id,name,phone,pincode,address,landmark
+    */
+    public static String USER_ADDRESS = BASE_URL + "user-address";
+
 }

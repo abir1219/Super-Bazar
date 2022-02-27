@@ -140,6 +140,13 @@
             app:popExitAnim="@anim/fade_out_animation"
             app:exitAnim="@anim/fade_out_animation"/>
 
+        <action android:id="@+id/nav_cart_to_address_list"
+            app:destination="@+id/navigation_address_list"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
         <action android:id="@+id/nav_cart_to_wishlist"
             app:destination="@+id/navigation_wishlist"
             app:popEnterAnim="@anim/fade_in_animation"
@@ -161,6 +168,14 @@
             app:enterAnim="@anim/fade_in_animation"
             app:popExitAnim="@anim/fade_out_animation"
             app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_address_list"
+        android:name="com.superbazar.ui.Address.AddressListFragment"
+        android:label="Address List"
+        tools:layout="@layout/fragment_address_list">
 
     </fragment>
 

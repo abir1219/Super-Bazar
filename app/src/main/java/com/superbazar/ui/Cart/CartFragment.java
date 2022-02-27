@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -167,6 +168,8 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         binding.llLogin.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.tvContinue.setOnClickListener(this);
+        binding.llContinueShopping.setOnClickListener(this);
     }
 
     private void setLayout() {
@@ -183,8 +186,11 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    binding.tvTotal.setText("₹ "+jsonObject.getString("total"));
                     if(jsonObject.getString("status").equals("1")){
+                        binding.tvTotal.setText("₹ "+jsonObject.getString("total"));
+                        //Toast.makeText(getActivity(), "have", Toast.LENGTH_SHORT).show();
+                        binding.llDataNotFound.setVisibility(View.GONE);
+                        binding.llAfterLogin.setVisibility(View.VISIBLE);
                         JSONArray array = jsonObject.getJSONArray("results");
                         Log.d("ARRAY_RES",array.toString());
                         for(int i=0;i< array.length();i++){
@@ -219,6 +225,9 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                             }
                         });
                     }else{
+                        //Toast.makeText(getActivity(), "don't have", Toast.LENGTH_SHORT).show();
+                        binding.llDataNotFound.setVisibility(View.VISIBLE);
+                        binding.llAfterLogin.setVisibility(View.GONE);
                         CartAdapter adapter = new CartAdapter(modelList, getActivity());
                         binding.rvCart.setAdapter(adapter);
                         //binding.llDataNotFound.setVisibility(View.VISIBLE);
@@ -258,8 +267,16 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
                 getActivity().finish();
                 break;
+            case R.id.llContinueShopping:
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().finish();
+                break;
             case R.id.llWisth:
                 Navigation.findNavController(v).navigate(R.id.nav_cart_to_wishlist);
+                break;
+            case R.id.tvContinue:
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list);
                 break;
         }
     }
