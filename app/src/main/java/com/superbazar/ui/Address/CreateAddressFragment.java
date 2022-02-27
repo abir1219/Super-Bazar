@@ -39,11 +39,19 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
     }
 
     private void btnClick() {
-
+        binding.btSignUp.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btSignUp:
+                checkData();
+                break;
+        }
+    }
+
+    private void checkData() {
 
     }
 }

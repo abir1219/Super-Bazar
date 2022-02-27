@@ -133,4 +133,11 @@ public class Urls {
     */
     public static String USER_ADDRESS = BASE_URL + "user-address";
 
+    /*
+    Function: address-list
+    Method: POST
+    Parameter : user_id
+    */
+    public static String ADDRESS_LIST = BASE_URL + "address-list";
+
 }
