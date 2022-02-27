@@ -3,6 +3,7 @@ package com.superbazar.ui.Address;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.superbazar.R;
 import com.superbazar.databinding.FragmentAddressListBinding;
 
-public class AddressListFragment extends Fragment {
+public class AddressListFragment extends Fragment implements View.OnClickListener{
     FragmentAddressListBinding binding;
 
     @Override
@@ -33,6 +34,21 @@ public class AddressListFragment extends Fragment {
         try{
             nav.setVisibility(View.GONE);
         }catch (Exception e){}
+
+        btnClick();
         return binding.getRoot();
+    }
+
+    private void btnClick() {
+        binding.fbNewAddress.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fbNewAddress:
+                Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address);
+                break;
+        }
     }
 }

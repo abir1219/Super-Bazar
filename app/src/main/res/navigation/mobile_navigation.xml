@@ -177,6 +177,21 @@
         android:label="Address List"
         tools:layout="@layout/fragment_address_list">
 
+        <action android:id="@+id/navigation_address_list_to_address"
+            app:destination="@+id/navigation_address"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_address"
+        android:name="com.superbazar.ui.Address.CreateAddressFragment"
+        android:label="Address"
+        tools:layout="@layout/fragment_create_address">
+
     </fragment>
 
 
