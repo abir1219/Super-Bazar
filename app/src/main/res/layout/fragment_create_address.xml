@@ -228,6 +228,21 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:id="@+id/etLandmark"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/edit_text1"
+                        android:drawablePadding="5dp"
+                        android:hint="Nearest Landmark *"
+                        android:imeOptions="actionNext"
+                        android:paddingLeft="10dp"
+                        android:textColorHint="#adb2b2"
+                        android:textSize="15sp" />
+
+                    <EditText
                         android:id="@+id/etPincode"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
@@ -245,20 +260,6 @@
                         android:textColorHint="#adb2b2"
                         android:textSize="15sp" />
 
-                    <EditText
-                        android:id="@+id/etLandmark"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/edit_text1"
-                        android:drawablePadding="5dp"
-                        android:hint="Nearest Landmark *"
-                        android:imeOptions="actionNext"
-                        android:paddingLeft="10dp"
-                        android:textColorHint="#adb2b2"
-                        android:textSize="15sp" />
 
                     <Button
                         android:id="@+id/btSignUp"

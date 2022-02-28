@@ -42,10 +42,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CartFragment extends Fragment implements View.OnClickListener{
+public class CartFragment extends Fragment implements View.OnClickListener {
     FragmentCartBinding binding;
     ProgressDialog progressDialog;
     List<CartModel> modelList;
+    String totalCost = "";
 
     @Override
     public void onResume() {
@@ -61,7 +62,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentCartBinding.inflate(inflater,container,false);
+        binding = FragmentCartBinding.inflate(inflater, container, false);
         try {
             BottomNavigationView btnNav = getActivity().findViewById(R.id.bottom_nav);
             btnNav.setVisibility(View.GONE);
@@ -74,10 +75,10 @@ public class CartFragment extends Fragment implements View.OnClickListener{
         loadCartCount();
         loadWishlistCount();
 
-        if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+        if (YoDB.getPref().read(Constants.ID, "").isEmpty()) {
             binding.llBeforeLogin.setVisibility(View.VISIBLE);
             binding.llAfterLogin.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.llAfterLogin.setVisibility(View.VISIBLE);
             binding.llBeforeLogin.setVisibility(View.GONE);
             loadCart();
@@ -173,7 +174,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setLayout() {
-        binding.rvCart.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false));
+        binding.rvCart.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
     }
 
     private void loadCart() {
@@ -186,14 +187,15 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.getString("status").equals("1")){
-                        binding.tvTotal.setText("₹ "+jsonObject.getString("total"));
+                    if (jsonObject.getString("status").equals("1")) {
+                        binding.tvTotal.setText("₹ " + jsonObject.getString("total"));
+                        totalCost = jsonObject.getString("total");
                         //Toast.makeText(getActivity(), "have", Toast.LENGTH_SHORT).show();
                         binding.llDataNotFound.setVisibility(View.GONE);
                         binding.llAfterLogin.setVisibility(View.VISIBLE);
                         JSONArray array = jsonObject.getJSONArray("results");
-                        Log.d("ARRAY_RES",array.toString());
-                        for(int i=0;i< array.length();i++){
+                        Log.d("ARRAY_RES", array.toString());
+                        for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
                             String cartId = object.getString("CartId");
                             String prodId = object.getString("ProductId");
@@ -209,11 +211,11 @@ public class CartFragment extends Fragment implements View.OnClickListener{
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);
-                            String image = "https://smlawb.org/superbazaar/web/uploads/product/"+obj.getString("ProductFileName");
+                            String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
 
-                            modelList.add(new CartModel(cartId,prodId,ProductName,ProductShortDescription,Quantity,image,ProductMarketPrice,ProductSellingPrice));
+                            modelList.add(new CartModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice));
                         }
-                        CartAdapter adapter = new CartAdapter(modelList,getActivity());
+                        CartAdapter adapter = new CartAdapter(modelList, getActivity());
                         binding.rvCart.setAdapter(adapter);
 
                         adapter.setListner(new onDataRecived() {
@@ -224,7 +226,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
                                 loadCart();
                             }
                         });
-                    }else{
+                    } else {
                         //Toast.makeText(getActivity(), "don't have", Toast.LENGTH_SHORT).show();
                         binding.llDataNotFound.setVisibility(View.VISIBLE);
                         binding.llAfterLogin.setVisibility(View.GONE);
@@ -242,13 +244,13 @@ public class CartFragment extends Fragment implements View.OnClickListener{
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Log.d("RES_ID",YoDB.getPref().read(Constants.ID,""));
-                Map<String,String> body = new HashMap<>();
-                body.put("id", YoDB.getPref().read(Constants.ID,""));
+                Log.d("RES_ID", YoDB.getPref().read(Constants.ID, ""));
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 return body;
             }
         };
@@ -257,26 +259,28 @@ public class CartFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.llMenu:
-                ((MainActivity)getActivity()).openDrawer();
+                ((MainActivity) getActivity()).openDrawer();
                 break;
 
             case R.id.llLogin:
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                 getActivity().finish();
                 break;
             case R.id.llContinueShopping:
                 startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                 getActivity().finish();
                 break;
             case R.id.llWisth:
                 Navigation.findNavController(v).navigate(R.id.nav_cart_to_wishlist);
                 break;
             case R.id.tvContinue:
-                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list);
+                Bundle bundle = new Bundle();
+                bundle.putString("total",totalCost);
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list,bundle);
                 break;
         }
     }

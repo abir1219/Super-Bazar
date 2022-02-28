@@ -1,6 +1,8 @@
 package com.superbazar.ui.Address.Adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.superbazar.R;
@@ -18,6 +21,7 @@ import java.util.List;
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
     List<AddressModel> modelList;
     Context context;
+    public static int selected_postion = -1;
 
     public AddressAdapter(List<AddressModel> modelList, Context context) {
         this.modelList = modelList;
@@ -36,6 +40,26 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.tvLandmark.setText(modelList.get(position).getLandmark());
         holder.tvPhone.setText(modelList.get(position).getPhone());
         holder.tvAddPin.setText(modelList.get(position).getAddress()+" , "+modelList.get(position).getPincode());
+
+        int gray = Color.parseColor("#11808080");
+        int whiteColor = Color.parseColor("#FFFFFF");
+
+        //holder.cvLayout.setCardBackgroundColor(context.getResources().getColor(R.color.white));
+
+        //holder.itemView.setBackground(AddressAdapter.selected_postion == position ? context.getResources().getColor(R.color.white) : ColorStateList.valueOf(gray));
+        holder.itemView.setBackgroundColor(selected_postion == position ? context.getResources().getColor(R.color.white) : context.getResources().getColor(R.color.gray1));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notifyItemChanged(selected_postion);
+                selected_postion = holder.getLayoutPosition();
+                //notifyItemChanged(selected_postion);
+
+                holder.ivSelect.setVisibility(View.GONE);
+                holder.ivSelect1.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -45,7 +69,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView tvName,tvLandmark,tvAddPin,tvPhone;
-        ImageView ivEdit,ivDelete;
+        ImageView ivSelect,ivSelect1,ivEdit,ivDelete;
+        CardView cvLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,8 +78,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             tvLandmark = itemView.findViewById(R.id.tvLandmark);
             tvAddPin = itemView.findViewById(R.id.tvAddPin);
             tvPhone = itemView.findViewById(R.id.tvPhone);
+            ivSelect = itemView.findViewById(R.id.ivSelect);
+            ivSelect1 = itemView.findViewById(R.id.ivSelect1);
             ivEdit = itemView.findViewById(R.id.ivEdit);
             ivDelete = itemView.findViewById(R.id.ivDelete);
+            cvLayout = itemView.findViewById(R.id.cvLayout);
         }
     }
 }

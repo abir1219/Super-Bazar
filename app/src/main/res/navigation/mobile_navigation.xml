@@ -184,6 +184,27 @@
             app:popExitAnim="@anim/fade_out_animation"
             app:exitAnim="@anim/fade_out_animation"/>
 
+        <action android:id="@+id/navigation_address_list_to_place_order"
+            app:destination="@+id/navigation_place_order"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_address_list_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_address_list_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
     </fragment>
 
     <fragment
@@ -191,6 +212,50 @@
         android:name="com.superbazar.ui.Address.CreateAddressFragment"
         android:label="Address"
         tools:layout="@layout/fragment_create_address">
+
+
+        <action android:id="@+id/navigation_address_to_address"
+            app:destination="@+id/navigation_address_list"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_address_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_address_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_place_order"
+        android:name="com.superbazar.ui.PlaceOrder.PlaceOrderFragment"
+        android:label="Place Order"
+        tools:layout="@layout/fragment_place_order">
+
+        <action android:id="@+id/nav_place_order_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_place_order_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
 
     </fragment>
 

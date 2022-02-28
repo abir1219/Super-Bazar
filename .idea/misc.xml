@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/btn_go.xml" value="0.118" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/btn_nav_background.xml" value="0.118" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/button_background.xml" value="0.136" />
+        <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/button_background1.xml" value="0.11" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/category_gradient.xml" value="0.118" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/customer_bottom_nav_colors.xml" value="0.118" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/drawable/edit_text1.xml" value="0.1395" />
@@ -42,9 +43,10 @@
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_address_list.xml" value="0.15648148148148147" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_cart.xml" value="0.15648148148148147" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_category.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_create_address.xml" value="0.16111111111111112" />
+        <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_create_address.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_first.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_place_order.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_product_details.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_product_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Abir/AndroidStudioProjects/Office Projects/SuperBazar/app/src/main/res/layout/fragment_wishlist.xml" value="0.20416666666666666" />

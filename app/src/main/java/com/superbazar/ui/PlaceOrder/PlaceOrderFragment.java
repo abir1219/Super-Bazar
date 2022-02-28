@@ -1,6 +1,5 @@
-package com.superbazar.ui.Address;
+package com.superbazar.ui.PlaceOrder;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -10,6 +9,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,7 +26,7 @@ import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
-import com.superbazar.databinding.FragmentCreateAddressBinding;
+import com.superbazar.databinding.FragmentPlaceOrderBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,31 +34,64 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateAddressFragment extends Fragment implements View.OnClickListener{
-    FragmentCreateAddressBinding binding;
+public class PlaceOrderFragment extends Fragment implements View.OnClickListener {
+    FragmentPlaceOrderBinding binding;
+    RadioButton radioButton;
+    private String payment_mode = "";
 
     @Override
     public void onResume() {
         super.onResume();
-        BottomNavigationView nav = getActivity().findViewById(R.id.bottom_nav);
-        try{
-            nav.setVisibility(View.GONE);
-        }catch (Exception e){}
+        try {
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        } catch (NullPointerException e) {
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentCreateAddressBinding.inflate(inflater,container,false);
-        BottomNavigationView nav = getActivity().findViewById(R.id.bottom_nav);
-        try{
-            nav.setVisibility(View.GONE);
-        }catch (Exception e){}
+        binding = FragmentPlaceOrderBinding.inflate(inflater, container, false);
+        try {
+            BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
+            navBar.setVisibility(View.GONE);
+        } catch (NullPointerException e) {
+        }
 
         btnClick();
         loadCartCount();
         loadWishlistCount();
+
+        binding.tvTotalPrice.setText(getArguments().getString("total"));
+        binding.tvTax.setText("00.00");
+        binding.tvAllTotal.setText(getArguments().getString("total"));
+        binding.txt.setText("₹" + getArguments().getString("total"));
+
+        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                RadioButton rb = (RadioButton) binding.radioGroup.findViewById(checkedId);
+                int selectedId = binding.radioGroup.getCheckedRadioButtonId();
+                radioButton = (RadioButton) binding.radioGroup.findViewById(selectedId);
+                //Toast.makeText(getActivity(), "rb: "+radioButton, Toast.LENGTH_SHORT).show();
+                if (selectedId == -1) {
+                    Toast.makeText(getActivity(), "Nothing selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Toast.makeText(getActivity(),radioButton.getText(), Toast.LENGTH_SHORT).show();
+                    if (radioButton.getText().toString().equalsIgnoreCase("CASH ON DELIVERY (COD)")) {
+                        binding.btContinue.setText("PLACE ORDER");
+                        payment_mode = "cod";
+                    } else if (radioButton.getText().toString().equalsIgnoreCase("ONLINE PAYMENT")) {
+                        binding.btContinue.setText("PAY NOW");
+                        //binding.btContinue.setText("PLACE ORDER");
+                        payment_mode = "online";
+                    }
+                }
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -136,99 +171,65 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
     }
 
     private void btnClick() {
-        binding.btSignUp.setOnClickListener(this);
         binding.llMenu.setOnClickListener(this);
+        binding.btContinue.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
+        binding.cod.setOnClickListener(this);
+        binding.online.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity)getActivity()).openDrawer();
                 break;
-            case R.id.btSignUp:
-                checkData(v);
+            case R.id.btContinue:
+                if (!payment_mode.equals("")) {
+                    //Toast.makeText(getActivity(), payment_mode, Toast.LENGTH_SHORT).show();
+                    if (payment_mode.equalsIgnoreCase("cod")) {
+                        placeOrder();
+                    } else if (payment_mode.equalsIgnoreCase("online")) {
+                        Toast.makeText(getActivity(), "Working on it", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case R.id.cod:
+                payment_mode = "cod";
+                binding.iv1.setVisibility(View.GONE);
+                binding.iv01.setVisibility(View.VISIBLE);
+                binding.txt1.setTextColor(getResources().getColor(R.color.red));
+                binding.btContinue.setText("PLACE ORDER");
+
+                binding.iv2.setVisibility(View.VISIBLE);
+                binding.iv02.setVisibility(View.GONE);
+                binding.txt2.setTextColor(getResources().getColor(R.color.black));
+                break;
+            case R.id.online:
+                payment_mode = "online";
+                binding.iv2.setVisibility(View.GONE);
+                binding.iv02.setVisibility(View.VISIBLE);
+                binding.txt2.setTextColor(getResources().getColor(R.color.red));
+                binding.btContinue.setText("PAY NOW");
+
+                binding.iv1.setVisibility(View.VISIBLE);
+                binding.iv01.setVisibility(View.GONE);
+                binding.txt1.setTextColor(getResources().getColor(R.color.black));
                 break;
             case R.id.llCart:
-                Bundle bundle2 = new Bundle();
-                bundle2.putString("key", "val");
-                Navigation.findNavController(v).navigate(R.id.nav_address_to_cart, bundle2);
+                Bundle bundle = new Bundle();
+                bundle.putString("key", "val");
+                Navigation.findNavController(v).navigate(R.id.nav_place_order_to_cart, bundle);
                 break;
             case R.id.flWishlist:
-                Bundle bundle3 = new Bundle();
-                bundle3.putString("key", "val");
-                Navigation.findNavController(v).navigate(R.id.nav_address_to_wishlist, bundle3);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("key", "val");
+                Navigation.findNavController(v).navigate(R.id.nav_place_order_to_wishlist, bundle1);
                 break;
         }
     }
 
-    private void checkData(View v) {
-        if(binding.etName.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Please enter the name", Toast.LENGTH_SHORT).show();
-            binding.etName.requestFocus();
-        }else if(binding.etPhone.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Please enter phone number", Toast.LENGTH_SHORT).show();
-            binding.etPhone.requestFocus();
-        }else if(binding.etPhone.getText().length() != 10){
-            Toast.makeText(getActivity(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
-            binding.etPhone.requestFocus();
-        }else if(binding.etAddress.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Please enter address", Toast.LENGTH_SHORT).show();
-            binding.etAddress.requestFocus();
-        }else if(binding.etLandmark.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Please enter the nearest landmark", Toast.LENGTH_SHORT).show();
-            binding.etLandmark.requestFocus();
-        }else if(binding.etPincode.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(), "Please enter pincode", Toast.LENGTH_SHORT).show();
-            binding.etPincode.requestFocus();
-        }else{
-            saveAddress(v);
-        }
-    }
-
-    private void saveAddress(View v) {
-        ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Saving...");
-        dialog.show();
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.USER_ADDRESS, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                dialog.dismiss();
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if(object.getString("status").equals("1")){
-                        Toast.makeText(getActivity(), "Address saved successful", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("total",getArguments().getString("total"));
-                        Navigation.findNavController(v).navigate(R.id.navigation_address_to_address,bundle);
-                    }else{
-                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                dialog.dismiss();
-            }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> body = new HashMap<>();
-                body.put("user_id", YoDB.getPref().read(Constants.ID,""));
-                body.put("name",binding.etName.getText().toString());
-                body.put("phone",binding.etPhone.getText().toString());
-                body.put("pincode",binding.etPincode.getText().toString());
-                body.put("address",binding.etAddress.getText().toString());
-                body.put("landmark",binding.etLandmark.getText().toString());
-                return body;
-            }
-        };
-        Volley.newRequestQueue(getActivity()).add(sr);
+    private void placeOrder() {
     }
 }
