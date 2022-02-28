@@ -171,8 +171,8 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
     }
 
     private void btnClick() {
-        binding.llMenu.setOnClickListener(this);
         binding.btContinue.setOnClickListener(this);
+        binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
         binding.cod.setOnClickListener(this);
