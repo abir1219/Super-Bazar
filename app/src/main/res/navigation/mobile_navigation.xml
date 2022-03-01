@@ -243,6 +243,13 @@
         android:label="Place Order"
         tools:layout="@layout/fragment_place_order">
 
+        <action android:id="@+id/nav_place_order_to_order_list"
+            app:destination="@+id/navigation_order_list"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
         <action android:id="@+id/nav_place_order_to_wishlist"
             app:destination="@+id/navigation_wishlist"
             app:popEnterAnim="@anim/fade_in_animation"
@@ -280,6 +287,7 @@
             app:exitAnim="@anim/fade_out_animation"/>
 
     </fragment>
+
 
 
 </navigation>

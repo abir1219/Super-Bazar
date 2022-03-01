@@ -140,4 +140,11 @@ public class Urls {
     */
     public static String ADDRESS_LIST = BASE_URL + "address-list";
 
+    /*
+    Function: order-place
+    Method: POST
+    Parameter : user_id,payment_type,address_id,total
+    */
+    public static String PLACE_ORDER = BASE_URL + "order-place";
+
 }

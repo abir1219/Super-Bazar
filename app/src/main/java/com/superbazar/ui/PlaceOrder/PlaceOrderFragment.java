@@ -1,5 +1,8 @@
 package com.superbazar.ui.PlaceOrder;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -27,6 +30,7 @@ import com.superbazar.R;
 import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentPlaceOrderBinding;
+import com.superbazar.databinding.OrderSuccessDialogBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +71,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         binding.tvTotalPrice.setText(getArguments().getString("total"));
         binding.tvTax.setText("00.00");
         binding.tvAllTotal.setText(getArguments().getString("total"));
-        binding.txt.setText("₹" + getArguments().getString("total"));
+        binding.txt.setText("₹ " + getArguments().getString("total"));
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -231,5 +235,62 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
     }
 
     private void placeOrder() {
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Loading...");
+        dialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.PLACE_ORDER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equals("1")) {
+                        showSuccessDialog();
+                    } else {
+                        Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("user_id",YoDB.getPref().read(Constants.ID,""));
+                body.put("payment_type",payment_mode);
+                body.put("address_id",getArguments().getString("addressId"));
+                body.put("total",getArguments().getString("total"));
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+
+    private void showSuccessDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        OrderSuccessDialogBinding binding = OrderSuccessDialogBinding.inflate(LayoutInflater.from(getActivity()));
+        dialog.setContentView(binding.getRoot());
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //binding.tvDescription.setText("Your order with order id " + order_id + " has been successfully placed");
+        dialog.show();
+        dialog.setCancelable(false);
+        binding.tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getActivity(), "Go to order listing page from drawer menu", Toast.LENGTH_SHORT).show();
+                /*startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();*/
+                Navigation.findNavController(view).navigate(R.id.nav_place_order_to_order_list);
+                dialog.dismiss();
+            }
+        });
     }
 }

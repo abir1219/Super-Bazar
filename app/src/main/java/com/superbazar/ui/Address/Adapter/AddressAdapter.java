@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.superbazar.R;
+import com.superbazar.ui.Address.AddressListFragment;
 import com.superbazar.ui.Address.Model.AddressModel;
 
 import java.util.List;
@@ -47,17 +48,24 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         //holder.cvLayout.setCardBackgroundColor(context.getResources().getColor(R.color.white));
 
         //holder.itemView.setBackground(AddressAdapter.selected_postion == position ? context.getResources().getColor(R.color.white) : ColorStateList.valueOf(gray));
-        holder.itemView.setBackgroundColor(selected_postion == position ? context.getResources().getColor(R.color.white) : context.getResources().getColor(R.color.gray1));
+        //holder.itemView.setBackgroundColor(selected_postion == position ? context.getResources().getColor(R.color.white) : context.getResources().getColor(R.color.gray1));
+
+        if(selected_postion == position){
+            AddressListFragment.address_id = modelList.get(position).getId();
+            holder.ivSelect.setVisibility(View.GONE);
+            holder.ivSelect1.setVisibility(View.VISIBLE);
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else{
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.gray1));
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 notifyItemChanged(selected_postion);
-                selected_postion = holder.getLayoutPosition();
-                //notifyItemChanged(selected_postion);
-
-                holder.ivSelect.setVisibility(View.GONE);
-                holder.ivSelect1.setVisibility(View.VISIBLE);
+                //selected_postion = holder.getLayoutPosition();
+                selected_postion = holder.getAdapterPosition();
+                notifyItemChanged(selected_postion);
             }
         });
     }

@@ -20,35 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white">
-
             <TextView
                 android:id="@+id/tvId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Order No 000"
                 android:textColor="@color/black"
                 android:textSize="13sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:text="Order No 000"/>
             <TextView
+                android:layout_below="@+id/tvId"
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvId"
-                android:text="00/00/0000 00/00"
                 android:textColor="@color/black5"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:text="00/00/0000 00/00"/>
 
             <TextView
+                android:layout_alignParentRight="true"
                 android:id="@+id/tvPrice"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:text="Rs. 00"
                 android:textColor="@color/black"
                 android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="Rs. 00"/>
 
         </RelativeLayout>
 
@@ -60,7 +58,6 @@
             />
         <FrameLayout
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
 
             >

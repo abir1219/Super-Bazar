@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -169,13 +170,14 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                         JSONArray array = jsonObject.getJSONArray("results");
                         for(int i=0;i<array.length();i++){
                             JSONObject object = array.getJSONObject(i);
+                            String AddressId = object.getString("AddressId");
                             String Name = object.getString("Name");
                             String Phone = object.getString("Phone");
                             String PinCode = object.getString("PinCode");
                             String Address = object.getString("Address");
                             String Landmark = object.getString("Landmark");
 
-                            modelList.add(new AddressModel(Name,Phone,Address,Landmark,PinCode));
+                            modelList.add(new AddressModel(AddressId,Name,Phone,Address,Landmark,PinCode));
                         }
 
                         AddressAdapter adapter = new AddressAdapter(modelList,getActivity());
@@ -239,10 +241,16 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                 Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address,bundle);
                 break;
             case R.id.tvContinue:
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("total",getArguments().getString("total"));
-                Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order,bundle1);
-                break;
+                Log.d("address_id",address_id);
+                if(address_id.equals("")|| address_id.isEmpty() ){
+                    Toast.makeText(getActivity(), "Select an address", Toast.LENGTH_SHORT).show();
+                }else {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("total", getArguments().getString("total"));
+                    bundle1.putString("addressId", address_id);
+                    Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order, bundle1);
+                    break;
+                }
         }
     }
 }
