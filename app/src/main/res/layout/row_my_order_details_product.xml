@@ -1,62 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="3dp"
-    >
+    android:elevation="3dp"
+    app:cardCornerRadius="5dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp"
-        >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tvId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order No 000"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_below="@+id/tvId"
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black5"
-                android:textSize="13sp"
-                android:text="00/00/0000 00/00"/>
-
-            <TextView
-                android:layout_alignParentRight="true"
-                android:id="@+id/tvPrice"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:text="Rs. 00"/>
-
-        </RelativeLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOrder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -180,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:text="Placed"
                         android:textSize="11sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/baseColor"/>
                     <TextView
                         android:gravity="center"
                         android:layout_weight="1"
@@ -188,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:text="On Process"
                         android:textSize="11sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/baseColor"/>
                     <TextView
                         android:gravity="center"
                         android:layout_weight="1"
@@ -196,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:text="Dispatch"
                         android:textSize="11sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/baseColor"/>
                     <TextView
                         android:visibility="gone"
                         android:gravity="center"
@@ -205,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:text="Asign Delivery Person"
                         android:textSize="11sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/baseColor"/>
                     <TextView
                         android:gravity="center"
                         android:layout_weight="1"
@@ -213,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:text="Delivered"
                         android:textSize="11sp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/baseColor"/>
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
@@ -221,21 +177,149 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="visible"
             android:background="@color/black7"
 
             />
-        <TextView
-            android:id="@+id/tvViewDetails"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:text="View Details >"
-            android:textStyle="bold"
-            android:textColor="@color/black4"
-            android:textSize="13sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginBottom="3dp"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Cancelled"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvCancelDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    tools:text="Cancelled"
+                    android:textColor="@color/black4"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvPName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:textColor="@color/baseColor"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="Product Details"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Qty : 00"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 0.00"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!--<TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="Cancelled"
+                    android:textColor="@color/red4"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivPic"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCancelPrd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black7"
+
+                />
+
+            <!--<LinearLayout
+                android:id="@+id/llCancels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginRight="6dp"
+                    android:src="@drawable/ic_cancel"
+                    app:tint="@color/black4" />
+
+                <TextView
+                    android:id="@+id/tvCancelProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Cancel Product"
+                    android:textColor="@color/black4"
+                    android:textSize="15sp" />
+            </LinearLayout>-->
+        </LinearLayout>
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

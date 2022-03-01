@@ -197,6 +197,8 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                     } else if (payment_mode.equalsIgnoreCase("online")) {
                         Toast.makeText(getActivity(), "Working on it", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(getActivity(), "Select a payment method", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.cod:
@@ -286,9 +288,9 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getActivity(), "Go to order listing page from drawer menu", Toast.LENGTH_SHORT).show();
-                /*startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();*/
-                Navigation.findNavController(view).navigate(R.id.nav_place_order_to_order_list);
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
+                //Navigation.findNavController(view).navigate(R.id.nav_place_order_to_order_list);
                 dialog.dismiss();
             }
         });

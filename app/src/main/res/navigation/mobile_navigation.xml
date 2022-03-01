@@ -286,8 +286,42 @@
             app:popExitAnim="@anim/fade_out_animation"
             app:exitAnim="@anim/fade_out_animation"/>
 
+        <action android:id="@+id/nav_order_list_to_order_details"
+            app:destination="@+id/navigation_order_details"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_order_details"
+        android:name="com.superbazar.ui.OrderDetails.OrderDetailsFragment"
+        android:label="Order Details"
+        tools:layout="@layout/fragment_order_details">
 
+        <action android:id="@+id/nav_order_details_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_order_details_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_order_list_to_product_details"
+            app:destination="@+id/navigation_product_details"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
 
 </navigation>

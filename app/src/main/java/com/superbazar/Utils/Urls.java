@@ -147,4 +147,18 @@ public class Urls {
     */
     public static String PLACE_ORDER = BASE_URL + "order-place";
 
+    /*
+    Function: order-list
+    Method: POST
+    Parameter : user_id
+    */
+    public static String ORDER_LIST = BASE_URL + "order-list";
+
+    /*
+    Function: order-details-list
+    Method: POST
+    Parameter : order_id
+    */
+    public static String ORDER_DETAILS_LIST = BASE_URL + "order-details-list";
+
 }

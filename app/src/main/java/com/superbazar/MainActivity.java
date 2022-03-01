@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         modelList.add(new DrawerModel(R.drawable.ic_baseline_home_24, "Home"));
         modelList.add(new DrawerModel(R.drawable.bag, "Cart"));
         modelList.add(new DrawerModel(R.drawable.love, "Wishlist"));
+        modelList.add(new DrawerModel(R.drawable.list, "My Order"));
         if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
             modelList.add(new DrawerModel(R.drawable.logout, "Login"));
         }else{
@@ -206,6 +207,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 3:
+                        navController.navigate(R.id.navigation_order_list, bundle, navBuilder.build());//This will open
+                        openDrawer();
+                        break;
+
+                    case 4:
                         if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                             overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);

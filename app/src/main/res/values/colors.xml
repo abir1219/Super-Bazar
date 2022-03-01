@@ -12,6 +12,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black3">#555555</color>
 
+    <color name="green5">#85CC6F</color>
+    <color name="colorGray">#C5C5C5</color>
+
     <color name="baseColor">#8CC809</color>
     <color name="red">#C9E91E63</color>
     <color name="red1">#FCEC0755</color>
