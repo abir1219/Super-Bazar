@@ -31,6 +31,7 @@ import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentPlaceOrderBinding;
 import com.superbazar.databinding.OrderSuccessDialogBinding;
+import com.superbazar.ui.RazorPay.RazorPayActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -195,7 +196,13 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                     if (payment_mode.equalsIgnoreCase("cod")) {
                         placeOrder();
                     } else if (payment_mode.equalsIgnoreCase("online")) {
-                        Toast.makeText(getActivity(), "Working on it", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Working on it", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), RazorPayActivity.class);
+                        intent.putExtra("addressId",getArguments().getString("addressId"));
+                        intent.putExtra("total",getArguments().getString("total"));
+                        intent.putExtra("payment_type",payment_mode);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
                     }
                 }else{
                     Toast.makeText(getActivity(), "Select a payment method", Toast.LENGTH_SHORT).show();
