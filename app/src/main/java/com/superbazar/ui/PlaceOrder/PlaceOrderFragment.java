@@ -69,8 +69,9 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         loadCartCount();
         loadWishlistCount();
 
-        binding.tvTotalPrice.setText(getArguments().getString("total"));
-        binding.tvTax.setText("00.00");
+        Double total  = Double.parseDouble(getArguments().getString("total")) - Double.parseDouble(getArguments().getString("totalTax"));
+        binding.tvTotalPrice.setText(String.format("%.2f",total));
+        binding.tvTax.setText(getArguments().getString("totalTax"));
         binding.tvAllTotal.setText(getArguments().getString("total"));
         binding.txt.setText("₹ " + getArguments().getString("total"));
 

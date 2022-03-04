@@ -62,6 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvAmount.setText("₹ " + modelList.get(position).getOffPrice());
         holder.tvS_Amount.setText("₹ " + modelList.get(position).getActualPrice());
         holder.tvCount.setText(modelList.get(position).getQuantity());
+        holder.tvTotal.setText("Total : ₹ " + modelList.get(position).getTotal());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
 
@@ -114,42 +115,48 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.ivPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int marketPrice = Integer.parseInt(modelList.get(position).getActualPrice());
-                int OffPrice = Integer.parseInt(modelList.get(position).getOffPrice());
+                holder.ivMinus.setClickable(false);
+                holder.ivPlus.setClickable(false);
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
                 qty++;
                 //holder.tvAmount.setText("₹ " + (OffPrice * qty));
                 //holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
                 holder.tvCount.setText("" + qty);
-                updateCart(position, qty);
+                updateCart(position, qty, holder);
             }
         });
 
         holder.ivMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int marketPrice = Integer.parseInt(modelList.get(position).getActualPrice());
-                int OffPrice = Integer.parseInt(modelList.get(position).getOffPrice());
+                holder.ivMinus.setClickable(false);
+                holder.ivPlus.setClickable(false);
                 int qty = Integer.parseInt(holder.tvCount.getText().toString());
                 if (qty > 1) {
                     qty--;
                     //holder.tvAmount.setText("₹ " + (OffPrice * qty));
                     //holder.tvS_Amount.setText("₹ " + (marketPrice * qty));
                     holder.tvCount.setText("" + qty);
-                    updateCart(position, qty);
+                    updateCart(position, qty,holder);
                 }
             }
         });
     }
 
-    private void updateCart(int position, int qty) {
+    private void updateCart(int position, int qty, ViewHolder holder) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.UPDATE_CART, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if(jsonObject.getString("status").equals("1")){
                         onDataRecived.onCallBack(String.valueOf(position));
+                        holder.ivMinus.setClickable(true);
+                        holder.ivPlus.setClickable(true);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -158,7 +165,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
             }
         }) {
             @Nullable
@@ -180,12 +187,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPName, tvPDesc, tvAmount, tvS_Amount, tvPRemove, tvCount;
+        TextView tvPName, tvPDesc, tvAmount, tvS_Amount, tvPRemove, tvCount,tvTotal;
         ImageView ivMinus, ivPlus, ivPPic;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            tvTotal = itemView.findViewById(R.id.tvTotal);
             tvPName = itemView.findViewById(R.id.tvPName);
             tvPDesc = itemView.findViewById(R.id.tvPDesc);
             tvAmount = itemView.findViewById(R.id.tvAmount);

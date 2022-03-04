@@ -47,6 +47,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     ProgressDialog progressDialog;
     List<CartModel> modelList;
     String totalCost = "";
+    Double totalTax = 0.0;
 
     @Override
     public void onResume() {
@@ -81,6 +82,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         } else {
             binding.llAfterLogin.setVisibility(View.VISIBLE);
             binding.llBeforeLogin.setVisibility(View.GONE);
+
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
             loadCart();
         }
         return binding.getRoot();
@@ -179,8 +183,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
 
     private void loadCart() {
         modelList = new ArrayList<>();
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        modelList.clear();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_LIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -203,17 +206,23 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                             String ProductShortDescription = object.getString("CategoryName");
                             String Quantity = object.getString("Quantity");
 
-                            int marketPrice = Integer.parseInt(object.getString("ProductMarketPrice")) * Integer.parseInt(Quantity);
-                            int sellingPrice = Integer.parseInt(object.getString("ProductSellingPrice")) * Integer.parseInt(Quantity);
+                            totalTax += Double.parseDouble(object.getString("TotalTax"));
 
-                            String ProductMarketPrice = String.valueOf(marketPrice);
-                            String ProductSellingPrice = String.valueOf(sellingPrice);
+                            Double marketPrice = Double.parseDouble(object.getString("ProductMarketPrice")) * Double.parseDouble(Quantity);
+                            Double sellingPrice = Double.parseDouble(object.getString("ProductSellingPrice")) * Double.parseDouble(Quantity);
+                            Double total = Double.parseDouble(object.getString("ProductSellingPrice")) * Double.parseDouble(Quantity);
+
+                            /*String ProductMarketPrice = String.format("%.2f",marketPrice);
+                            String ProductSellingPrice = String.format("%.2f",sellingPrice);*/
+
+                            String ProductMarketPrice = String.format("%.2f", Double.parseDouble(object.getString("ProductMarketPrice")));
+                            String ProductSellingPrice = String.format("%.2f", Double.parseDouble(object.getString("ProductSellingPrice")));
+                            String totalPrice = String.format("%.2f", total);
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
-
-                            modelList.add(new CartModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice));
+                            modelList.add(new CartModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice, totalPrice));
                         }
                         CartAdapter adapter = new CartAdapter(modelList, getActivity());
                         binding.rvCart.setAdapter(adapter);
@@ -279,8 +288,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.tvContinue:
                 Bundle bundle = new Bundle();
-                bundle.putString("total",totalCost);
-                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list,bundle);
+                bundle.putString("total", totalCost);
+                bundle.putString("totalTax", String.format("%.2f",totalTax));
+                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list, bundle);
                 break;
         }
     }

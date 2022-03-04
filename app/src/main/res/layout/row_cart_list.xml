@@ -159,11 +159,28 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivPPic"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/love" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivPPic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/love" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total: ₹ 9,822"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
