@@ -3,6 +3,7 @@ package com.superbazar.ui.Address.Adapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.superbazar.R;
@@ -66,6 +68,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 //selected_postion = holder.getLayoutPosition();
                 selected_postion = holder.getAdapterPosition();
                 notifyItemChanged(selected_postion);
+            }
+        });
+
+        holder.ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("type","edit");
+                bundle.putString("addressId",modelList.get(position).getId());
+                Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order, bundle);
             }
         });
     }
