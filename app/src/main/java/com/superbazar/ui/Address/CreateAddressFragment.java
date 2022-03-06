@@ -66,7 +66,7 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
         btnClick();
         loadCartCount();
         loadWishlistCount();
-        if (getArguments().containsKey("type") || getArguments().getString("type").equals("edit")) {
+        if (getArguments().containsKey("type") && getArguments().getString("type").equals("edit")) {
             loadAddress();
         }
         return binding.getRoot();
@@ -286,7 +286,7 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
                 body.put("user_id", YoDB.getPref().read(Constants.ID, ""));
-                if (getArguments().containsKey("type") || getArguments().getString("type").equals("edit")) {
+                if (getArguments().containsKey("type") && getArguments().getString("type").equals("edit")) {
                     body.put("address_id", getArguments().getString("addressId"));
                 }
                 body.put("name", binding.etName.getText().toString());

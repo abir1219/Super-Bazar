@@ -75,7 +75,29 @@
         android:id="@+id/navigation_category"
         android:name="com.superbazar.ui.Category.CategoryFragment"
         android:label="Category"
-        tools:layout="@layout/fragment_category"></fragment>
+        tools:layout="@layout/fragment_category">
+
+        <action android:id="@+id/nav_account_to_profile"
+            app:destination="@+id/navigation_profile"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_account_to_address_list"
+            app:destination="@+id/navigation_address_list"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.superbazar.ui.Profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"></fragment>
 
     <fragment
         android:id="@+id/navigation_product_details"

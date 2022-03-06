@@ -44,6 +44,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
     ProgressDialog dialog;
     List<AddressModel> modelList;
     public static String address_id = "";
+    public static String total = "";
 
     @Override
     public void onResume() {
@@ -65,7 +66,11 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
             nav.setVisibility(View.GONE);
         } catch (Exception e) {
         }
-
+        if(getArguments().containsKey("from") && getArguments().getString("from").equals("account")){
+            binding.cvPrice.setVisibility(View.GONE);
+        }else{
+            total = getArguments().getString("total");
+        }
         dialog = new ProgressDialog(getActivity());
         btnClick();
         loadCartCount();
@@ -224,6 +229,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         binding.tvContinue.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
+        binding.llMenu.setOnClickListener(this);
     }
 
     @Override
