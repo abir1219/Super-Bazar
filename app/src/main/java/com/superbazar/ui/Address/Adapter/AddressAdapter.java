@@ -95,6 +95,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 Bundle bundle = new Bundle();
                 bundle.putString("type","edit");
                 bundle.putString("total", AddressListFragment.total);
+                if(!AddressListFragment.from.isEmpty())
+                    bundle.putString("from", AddressListFragment.from);
                 bundle.putString("addressId",modelList.get(position).getId());
                 Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address, bundle);
             }

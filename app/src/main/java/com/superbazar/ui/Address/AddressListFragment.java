@@ -45,6 +45,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
     List<AddressModel> modelList;
     public static String address_id = "";
     public static String total = "";
+    public static String from = "";
 
     @Override
     public void onResume() {
@@ -68,7 +69,9 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         }
         if(getArguments().containsKey("from") && getArguments().getString("from").equals("account")){
             binding.cvPrice.setVisibility(View.GONE);
+            from = getArguments().getString("from");
         }else{
+            binding.cvPrice.setVisibility(View.VISIBLE);
             total = getArguments().getString("total");
         }
         dialog = new ProgressDialog(getActivity());
@@ -250,8 +253,12 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.fbNewAddress:
                 Bundle bundle = new Bundle();
-                bundle.putString("total",getArguments().getString("total"));
-                bundle.putString("totalTax", getArguments().getString("totalTax"));
+                if(getArguments().containsKey("from") && getArguments().getString("from").equals("account")) {
+                    bundle.putString("from","account");
+                }else{
+                    bundle.putString("total",getArguments().getString("total"));
+                    bundle.putString("totalTax", getArguments().getString("totalTax"));
+                }
                 Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address,bundle);
                 break;
             case R.id.tvContinue:
