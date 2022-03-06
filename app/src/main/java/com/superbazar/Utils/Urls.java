@@ -129,14 +129,14 @@ public class Urls {
     /*
     Function: user-address
     Method: POST
-    Parameter : user_id,name,phone,pincode,address,landmark
+    Parameter : address_id (when edit),user_id,name,phone,pincode,address,landmark
     */
     public static String USER_ADDRESS = BASE_URL + "user-address";
 
     /*
     Function: address-list
     Method: POST
-    Parameter : user_id
+    Parameter : user_id,address_id
     */
     public static String ADDRESS_LIST = BASE_URL + "address-list";
 
@@ -160,5 +160,13 @@ public class Urls {
     Parameter : order_id
     */
     public static String ORDER_DETAILS_LIST = BASE_URL + "order-details-list";
+
+    /*
+   Function: address-delete
+   Method: POST
+   Parameter :  address_id
+   */
+    public static String ADDRESS_DELETE = BASE_URL + "address-delete";
+
 
 }

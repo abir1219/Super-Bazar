@@ -270,7 +270,7 @@
                         android:layout_marginRight="20dp"
                         android:background="@drawable/btn_go"
                         android:padding="5dp"
-                        android:text="Add New Address"
+                        android:text="Save Address"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="18sp" />

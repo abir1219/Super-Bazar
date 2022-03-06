@@ -71,6 +71,8 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         loadCartCount();
         loadWishlistCount();
         setLayout();
+        dialog.setMessage("Loading...");
+        dialog.show();
         loadAddress();
         return binding.getRoot();
     }
@@ -154,8 +156,6 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         binding.tvTotal.setText("₹ "+getArguments().getString("total"));
 
         modelList = new ArrayList<>();
-        dialog.setMessage("Loading...");
-        dialog.show();
 
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.ADDRESS_LIST, new Response.Listener<String>() {
             @Override
@@ -182,6 +182,13 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
 
                         AddressAdapter adapter = new AddressAdapter(modelList,getActivity());
                         binding.rvAddress.setAdapter(adapter);
+
+                        adapter.setListner(new onDataReceived() {
+                            @Override
+                            public void onCallBack(String pos) {
+                                loadAddress();
+                            }
+                        });
 
                     }else{
                         binding.noAddress.setVisibility(View.VISIBLE);
@@ -254,5 +261,9 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                     break;
                 }
         }
+    }
+
+    public interface onDataReceived{
+        void onCallBack(String pos);
     }
 }

@@ -1,6 +1,9 @@
 package com.superbazar.ui.Address.Adapter;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,22 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.superbazar.R;
+import com.superbazar.Utils.Urls;
 import com.superbazar.ui.Address.AddressListFragment;
 import com.superbazar.ui.Address.Model.AddressModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
     List<AddressModel> modelList;
     Context context;
     public static int selected_postion = -1;
+    public AddressListFragment.onDataReceived onDataReceived;
 
     public AddressAdapter(List<AddressModel> modelList, Context context) {
         this.modelList = modelList;
@@ -77,9 +95,64 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 Bundle bundle = new Bundle();
                 bundle.putString("type","edit");
                 bundle.putString("addressId",modelList.get(position).getId());
-                Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order, bundle);
+                Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address, bundle);
             }
         });
+
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setCancelable(false)
+                        .setMessage("Do you want to delete this address?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteAddress(position);
+                            }
+                        })
+                .setNegativeButton("Cancel",null)
+                .show();
+            }
+        });
+
+    }
+
+    private void deleteAddress(int position) {
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage("Loading...");
+        dialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.ADDRESS_DELETE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        onDataReceived.onCallBack(String.valueOf(position));
+                    }else{
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Toast.makeText(context, "Getting some troubles", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put(" address_id",modelList.get(position).getId());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(context).add(sr);
     }
 
     @Override
@@ -104,5 +177,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             ivDelete = itemView.findViewById(R.id.ivDelete);
             cvLayout = itemView.findViewById(R.id.cvLayout);
         }
+    }
+
+    public void setListner(AddressListFragment.onDataReceived onDataReceived){
+        this.onDataReceived = onDataReceived;
     }
 }
