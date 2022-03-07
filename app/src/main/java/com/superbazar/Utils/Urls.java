@@ -168,5 +168,19 @@ public class Urls {
    */
     public static String ADDRESS_DELETE = BASE_URL + "address-delete";
 
+    /*
+   Function: user-profile
+   Method: POST
+   Parameter :  user_id
+   */
+    public static String USER_PROFILE = BASE_URL + "user-profile";
+
+    /*
+   Function: change-password
+   Method: POST
+   Parameter :  user_id, old_password, new_password
+   */
+    public static String CHANGE_PASSWORD = BASE_URL + "change-password";
+
 
 }

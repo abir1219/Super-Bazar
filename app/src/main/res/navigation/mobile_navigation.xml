@@ -77,6 +77,20 @@
         android:label="Category"
         tools:layout="@layout/fragment_category">
 
+        <action android:id="@+id/nav_account_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_account_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
         <action android:id="@+id/nav_account_to_profile"
             app:destination="@+id/navigation_profile"
             app:popEnterAnim="@anim/fade_in_animation"
@@ -97,7 +111,23 @@
         android:id="@+id/navigation_profile"
         android:name="com.superbazar.ui.Profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile"></fragment>
+        tools:layout="@layout/fragment_profile">
+
+        <action android:id="@+id/nav_profile_to_wishlist"
+            app:destination="@+id/navigation_wishlist"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+        <action android:id="@+id/nav_profile_to_cart"
+            app:destination="@+id/navigation_cart"
+            app:popEnterAnim="@anim/fade_in_animation"
+            app:enterAnim="@anim/fade_in_animation"
+            app:popExitAnim="@anim/fade_out_animation"
+            app:exitAnim="@anim/fade_out_animation"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_product_details"
