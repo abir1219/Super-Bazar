@@ -204,14 +204,15 @@
                         android:layout_marginRight="10dp"
                         />
                 </LinearLayout>
+
                 <View
                     android:id="@+id/v1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/black7"
                     android:layout_below="@+id/ll1"
+                    android:visibility="gone"
                     android:layout_marginTop="10dp"
-                    />
+                    android:background="@color/black7" />
                 <LinearLayout
                     android:id="@+id/ll2"
                     android:layout_below="@+id/v1"
@@ -219,6 +220,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingTop="5dp"
+                    android:visibility="gone"
                     android:paddingBottom="5dp">
                     <TextView
                         android:paddingBottom="5dp"

@@ -190,5 +190,10 @@ public class Urls {
    */
     public static String CHANGE_PASSWORD = BASE_URL + "change-password";
 
-
+    /*
+      Function: fetch-pincode
+      Method: POST
+      Parameter :  pin_code
+      */
+    public static String FETCH_PINCODE = BASE_URL + "fetch-pincode";
 }

@@ -250,6 +250,64 @@
 
             <!--</androidx.core.widget.NestedScrollView>-->
 
+            <RelativeLayout
+                android:id="@+id/checking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/cvPrice"
+                android:background="#F5F5F5"
+                android:layout_margin="10dp"
+                tools:ignore="NotSibling">
+
+                <TextView
+                    android:id="@+id/tvPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pincode Serviceability"
+                    android:textColor="#000"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/etPincode"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvPin"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="Postcode / Zip"
+                    android:inputType="number"
+                    android:paddingLeft="12dp"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+
+
+                <!--<Button
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/custom_btn"
+                    android:layout_below="@+id/tvPin"
+                    android:layout_toRightOf="@+id/etPincode"
+                    android:text="Check"
+                    android:id="@+id/btnCheck"/>-->
+
+                <TextView
+                    android:id="@+id/btnCheck"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvPin"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@+id/etPincode"
+                    android:gravity="center"
+                    android:text="Check"
+                    android:textColor="#022FD1"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvPrice"
                 android:layout_width="match_parent"

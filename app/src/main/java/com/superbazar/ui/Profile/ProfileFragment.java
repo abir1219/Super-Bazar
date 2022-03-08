@@ -399,7 +399,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     Toast.makeText(getActivity(), "Enter new password", Toast.LENGTH_SHORT).show();
                     binding1.newPw.requestFocus();
                 }else{
-                    updatePassword(dialog,binding1.oldPw.getText().toString(),binding1.newPw.getText().toString());
+                    updatePassword(dialog,binding1.newPw.getText().toString());
                 }
             }
         });
@@ -412,7 +412,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         });
     }
 
-    private void updatePassword(Dialog dialogWindow, String oldPW, String newPW) {
+    private void updatePassword(Dialog dialogWindow, String newPW) {
         dialog.show();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.CHANGE_PASSWORD, new Response.Listener<String>() {
             @Override
@@ -442,7 +442,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> body = new HashMap<>();
                 body.put("user_id",YoDB.getPref().read(Constants.ID,""));
-                body.put("old_password",oldPW);
                 body.put("new_password",newPW);
                 return body;
             }

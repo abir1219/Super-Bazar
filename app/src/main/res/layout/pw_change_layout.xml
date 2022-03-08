@@ -8,7 +8,7 @@
     android:paddingBottom="20dp"
     android:gravity="center_horizontal">
 
-    <EditText
+    <!--<EditText
         android:id="@+id/oldPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,12 +17,11 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:hint="Old Password"
-        android:padding="10dp" />
+        android:padding="10dp" />-->
 
 
     <EditText
         android:id="@+id/newPw"
-        android:layout_below="@+id/oldPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

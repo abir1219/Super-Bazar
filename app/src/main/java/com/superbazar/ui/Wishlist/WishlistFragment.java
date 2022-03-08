@@ -214,6 +214,8 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                     }else{
                         WishlistAdapter adapter = new WishlistAdapter(modelList, getActivity());
                         binding.rvWishlist.setAdapter(adapter);
+                        binding.llDataNotFound.setVisibility(View.VISIBLE);
+                        binding.rvWishlist.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

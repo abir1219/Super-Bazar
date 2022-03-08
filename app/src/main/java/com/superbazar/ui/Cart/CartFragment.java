@@ -48,6 +48,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     List<CartModel> modelList;
     String totalCost = "";
     Double totalTax = 0.0;
+    boolean pincodeChecked = false;
 
     @Override
     public void onResume() {
@@ -175,6 +176,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         binding.llWisth.setOnClickListener(this);
         binding.tvContinue.setOnClickListener(this);
         binding.llContinueShopping.setOnClickListener(this);
+        binding.btnCheck.setOnClickListener(this);
     }
 
     private void setLayout() {
@@ -287,12 +289,57 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 Navigation.findNavController(v).navigate(R.id.nav_cart_to_wishlist);
                 break;
             case R.id.tvContinue:
-                Bundle bundle = new Bundle();
-                bundle.putString("total", totalCost);
-                bundle.putString("totalTax", String.format("%.2f",totalTax));
-                Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list, bundle);
+                if(pincodeChecked == true){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("total", totalCost);
+                    bundle.putString("totalTax", String.format("%.2f",totalTax));
+                    Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list, bundle);
+                }else{
+                    Toast.makeText(getActivity(), "Please check pincode first", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btnCheck:
+                pincodeCheck();
                 break;
         }
+    }
+
+    private void pincodeCheck() {
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Loading...");
+        dialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.FETCH_PINCODE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.getString("status").equals("1")){
+                        pincodeChecked = true;
+                        Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }else{
+                        pincodeChecked = false;
+                        Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> body = new HashMap<>();
+                body.put("pin_code",binding.etPincode.getText().toString());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     public interface onDataRecived {
