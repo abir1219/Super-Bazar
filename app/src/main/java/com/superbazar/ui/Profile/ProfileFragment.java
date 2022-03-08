@@ -3,13 +3,16 @@ package com.superbazar.ui.Profile;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.superbazar.Helper.ManageLoginData;
 import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
@@ -42,7 +46,7 @@ import java.util.Map;
 public class ProfileFragment extends Fragment implements View.OnClickListener{
     FragmentProfileBinding binding;
     private String getEditData = "";
-
+    ProgressDialog dialog;
     @Override
     public void onResume() {
         super.onResume();
@@ -66,6 +70,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         btnClick();
         loadCartCount();
         loadWishlistCount();
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Loading...");
+        dialog.show();
         loadUser();
         return binding.getRoot();
     }
@@ -147,9 +154,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
 
     private void loadUser() {
-        ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Loading...");
-        dialog.show();
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.USER_PROFILE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -157,6 +161,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 try {
                     JSONObject object = new JSONObject(response);
                     Log.d("Response",object.toString());
+                    JSONObject obj = object.getJSONObject("result");
+
+                    String Fullname = obj.getString("Fullname");
+                    String Phone = obj.getString("Phone");
+                    String Email = obj.getString("Email");
+                    String Username = obj.getString("Username");
+                    //String fullName = obj.getString("Fullname");
+
+                    binding.tvName.setText(Fullname);
+                    binding.tvContact.setText(Phone);
+                    binding.tvEmail.setText(Email);
+                    binding.tvUsername.setText(Username);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -316,7 +332,57 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             case R.id.llWisth:
                 Navigation.findNavController(v).navigate(R.id.nav_profile_to_wishlist);
                 break;
+            case R.id.btnUpdate:
+                updateProfile();
+                break;
         }
+    }
+
+    private void updateProfile() {
+        dialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.USER_PROFILE_UPDATE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.getString("status").equals("1")){
+                        JSONObject object = jsonObject.getJSONObject("data");
+                        String userId = object.getString("userId");
+                        String name = object.getString("name");
+                        String phone = object.getString("phone");
+                        String email = object.getString("email");
+
+                        ManageLoginData.addLoginData(userId,name,email,phone);
+                        loadUser();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                String WebUserIP = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+
+                Map<String, String> body = new HashMap<>();
+                body.put("user_id",YoDB.getPref().read(Constants.ID,""));
+                body.put("WebUserIP",WebUserIP);
+                body.put("WebUserPhone",binding.tvContact.getText().toString());
+                body.put("WebUserEmail",binding.tvEmail.getText().toString());
+                body.put("WebUserFullName",binding.tvName.getText().toString());
+                body.put("WebUserName",binding.tvUsername.getText().toString());
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
     private void showPasswordChangeDialog(){
@@ -333,7 +399,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     Toast.makeText(getActivity(), "Enter new password", Toast.LENGTH_SHORT).show();
                     binding1.newPw.requestFocus();
                 }else{
-                    //updatePassword(dialog,binding1.newPw.getText().toString());
+                    updatePassword(dialog,binding1.oldPw.getText().toString(),binding1.newPw.getText().toString());
                 }
             }
         });
@@ -344,6 +410,44 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 dialog.dismiss();
             }
         });
+    }
+
+    private void updatePassword(Dialog dialogWindow, String oldPW, String newPW) {
+        dialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CHANGE_PASSWORD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(object.getString("status").equals("1")){
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        dialogWindow.dismiss();
+                    }else{
+                        Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                        dialogWindow.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> body = new HashMap<>();
+                body.put("user_id",YoDB.getPref().read(Constants.ID,""));
+                body.put("old_password",oldPW);
+                body.put("new_password",newPW);
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
     }
 
 }

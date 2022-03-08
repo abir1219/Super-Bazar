@@ -1,5 +1,6 @@
 package com.superbazar.ui.Category;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.superbazar.Activity.LoginActivity;
+import com.superbazar.Helper.ManageLoginData;
 import com.superbazar.Helper.YoDB;
 import com.superbazar.MainActivity;
 import com.superbazar.R;
@@ -157,6 +159,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 //getActivity().onBackPressed();
                 ((MainActivity) getActivity()).openDrawer();
                 break;
+            case R.id.llLogout:
+                logout();
+                break;
             case R.id.llCart:
                 Navigation.findNavController(v).navigate(R.id.nav_account_to_cart);
                 break;
@@ -182,5 +187,37 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_account_to_profile);
                 break;
         }
+    }
+
+    private void logout() {
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Logging Out");
+        progressDialog.show();
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.LOGOUT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                ManageLoginData.clearLoginData();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().finish();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID,""));
+                return body;
+            }
+        };
+        Volley.newRequestQueue(getActivity()).add(sr);
+    }
+});
     }
 }

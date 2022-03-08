@@ -169,11 +169,19 @@ public class Urls {
     public static String ADDRESS_DELETE = BASE_URL + "address-delete";
 
     /*
-   Function: user-profile
+   Function: user-profile-fetch
    Method: POST
    Parameter :  user_id
    */
-    public static String USER_PROFILE = BASE_URL + "user-profile";
+    public static String USER_PROFILE = BASE_URL + "user-profile-fetch";
+
+    /*
+   Function: webuser-update
+   Method: POST
+   Parameter :  user_id,WebUserIP,WebUserPhone,WebUserEmail,WebUserFullName,WebUserName
+
+   */
+    public static String USER_PROFILE_UPDATE = BASE_URL + "webuser-update";
 
     /*
    Function: change-password
