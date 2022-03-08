@@ -199,7 +199,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 progressDialog.dismiss();
                 ManageLoginData.clearLoginData();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().overridePendingTransition(R.anim.fade_in_animation,R.anim.fade_out_animation);
+                getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                 getActivity().finish();
             }
         }, new Response.ErrorListener() {
@@ -207,17 +207,15 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> body = new HashMap<>();
-                body.put("id", YoDB.getPref().read(Constants.ID,""));
+                Map<String, String> body = new HashMap<>();
+                body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 return body;
             }
         };
         Volley.newRequestQueue(getActivity()).add(sr);
-    }
-});
     }
 }
