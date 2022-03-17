@@ -56,6 +56,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTitle.setText(modelList.get(position).getProductName());
         holder.tvDetails.setText(modelList.get(position).getDesc());
+        holder.tvRating.setText(modelList.get(position).getProductRating());
         holder.tvOffPrice.setText("₹ "+modelList.get(position).getOffPrice());
 
         //Log.d("WISH_ID",modelList.get(position).getCartId());
@@ -152,13 +153,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTitle,tvDetails,tvOffPrice,tvCount;
+        TextView tvTitle,tvDetails,tvOffPrice,tvCount,tvRating;
         ImageView ivPPic,ivPlus,ivMinus;
         RelativeLayout rvRemoveWish,rlCart;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvRating = itemView.findViewById(R.id.tvRating);
             tvDetails = itemView.findViewById(R.id.tvDetails);
             tvOffPrice = itemView.findViewById(R.id.tvOffPrice);
             tvCount = itemView.findViewById(R.id.tvCount);

@@ -150,6 +150,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         binding.llProifle.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -158,6 +159,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             case R.id.llMenu:
                 //getActivity().onBackPressed();
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_category_to_search);
                 break;
             case R.id.llLogout:
                 logout();

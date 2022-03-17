@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,6 +172,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
         binding.llLogin.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     private void loadWishlist() {
@@ -183,6 +185,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d("WISH_RES",response);
                     if (jsonObject.getString("status").equals("1")) {
                         JSONArray array = jsonObject.getJSONArray("results");
                         for (int i = 0; i < array.length(); i++) {
@@ -190,6 +193,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                             String WishlistId = object.getString("WishlistId");
                             String prodId = object.getString("ProductId");
                             String ProductName = object.getString("ProductName");
+                            String ProductRating = object.getString("ProductRating");
                             String ProductShortDescription = object.getString("CategoryName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
                             String ProductSellingPrice = object.getString("ProductSellingPrice");
@@ -198,7 +202,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
 
-                            modelList.add(new WishlistModel(WishlistId, prodId, ProductName, ProductShortDescription, image, ProductMarketPrice, ProductSellingPrice));
+                            modelList.add(new WishlistModel(WishlistId, prodId, ProductName, ProductShortDescription, image, ProductMarketPrice, ProductSellingPrice,ProductRating));
                         }
                         WishlistAdapter adapter = new WishlistAdapter(modelList, getActivity());
                         binding.rvWishlist.setAdapter(adapter);
@@ -244,6 +248,9 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_wishlist_to_search);
                 break;
             case R.id.llLogin:
                 startActivity(new Intent(getActivity(), LoginActivity.class));

@@ -205,6 +205,7 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -212,6 +213,9 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_address_to_search);
                 break;
             case R.id.btSignUp:
                 checkData(v);

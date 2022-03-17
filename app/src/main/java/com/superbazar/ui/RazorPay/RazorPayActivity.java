@@ -64,7 +64,8 @@ public class RazorPayActivity extends AppCompatActivity implements PaymentResult
 
 
     private void startPayment() {
-        int amount = Math.round(Float.parseFloat(getIntent().getStringExtra("total"))*100);
+        String ttl = getIntent().getStringExtra("total").replace(",","");
+        int amount = Math.round(Float.parseFloat(ttl)*100);
 
         Checkout checkout = new Checkout();
 
@@ -119,6 +120,7 @@ public class RazorPayActivity extends AppCompatActivity implements PaymentResult
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.PLACE_ORDER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("ONLINE_RES",response);
                 dialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -144,13 +146,13 @@ public class RazorPayActivity extends AppCompatActivity implements PaymentResult
                 Log.d("user_id",YoDB.getPref().read(Constants.ID,""));
                 Log.d("payment_type",getIntent().getStringExtra("payment_type"));
                 Log.d("address_id",getIntent().getStringExtra("addressId"));
-                Log.d("total",getIntent().getStringExtra("total"));
+                Log.d("total",getIntent().getStringExtra("total").replace(",",""));
 
                 Map<String, String> body = new HashMap<>();
                 body.put("user_id",YoDB.getPref().read(Constants.ID,""));
                 body.put("payment_type",getIntent().getStringExtra("payment_type"));
                 body.put("address_id",getIntent().getStringExtra("addressId"));
-                body.put("total",getIntent().getStringExtra("total"));
+                body.put("total",getIntent().getStringExtra("total").replace(",",""));
                 return body;
             }
         };

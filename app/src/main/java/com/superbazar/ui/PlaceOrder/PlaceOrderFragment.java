@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,8 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         loadCartCount();
         loadWishlistCount();
 
-        Double total  = Double.parseDouble(getArguments().getString("total")) - Double.parseDouble(getArguments().getString("totalTax"));
+        String ttl = getArguments().getString("total").replace(",","");
+        Double total  = Double.parseDouble(ttl) - Double.parseDouble(getArguments().getString("totalTax"));
         binding.tvTotalPrice.setText(String.format("%.2f",total));
         binding.tvTax.setText(getArguments().getString("totalTax"));
         binding.tvAllTotal.setText(getArguments().getString("total"));
@@ -183,6 +185,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         binding.flWishlist.setOnClickListener(this);
         binding.cod.setOnClickListener(this);
         binding.online.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -190,6 +193,9 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity)getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_place_order_to_search);
                 break;
             case R.id.btContinue:
                 if (!payment_mode.equals("")) {
@@ -251,6 +257,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.PLACE_ORDER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("COD_RES",response);
                 dialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -277,7 +284,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                 body.put("user_id",YoDB.getPref().read(Constants.ID,""));
                 body.put("payment_type",payment_mode);
                 body.put("address_id",getArguments().getString("addressId"));
-                body.put("total",getArguments().getString("total"));
+                body.put("total",getArguments().getString("total").replace(",",""));
                 return body;
             }
         };

@@ -62,7 +62,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvAmount.setText("₹ " + modelList.get(position).getOffPrice());
         holder.tvS_Amount.setText("₹ " + modelList.get(position).getActualPrice());
         holder.tvCount.setText(modelList.get(position).getQuantity());
-        holder.tvTotal.setText("Total : ₹ " + modelList.get(position).getTotal());
+        holder.tvTotal.setText("Total: ₹" + modelList.get(position).getTotal());
+        holder.tvRating.setText(modelList.get(position).getProductRating());
 
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
 
@@ -187,7 +188,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPName, tvPDesc, tvAmount, tvS_Amount, tvPRemove, tvCount,tvTotal;
+        TextView tvPName, tvPDesc, tvAmount, tvS_Amount, tvPRemove, tvCount,tvTotal,tvRating;
         ImageView ivMinus, ivPlus, ivPPic;
 
         public ViewHolder(@NonNull View itemView) {
@@ -203,6 +204,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             ivMinus = itemView.findViewById(R.id.ivMinus);
             ivPlus = itemView.findViewById(R.id.ivPlus);
             ivPPic = itemView.findViewById(R.id.ivPPic);
+            tvRating = itemView.findViewById(R.id.tvRating);
         }
     }
 

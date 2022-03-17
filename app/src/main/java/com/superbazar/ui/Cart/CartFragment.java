@@ -177,6 +177,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         binding.tvContinue.setOnClickListener(this);
         binding.llContinueShopping.setOnClickListener(this);
         binding.btnCheck.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     private void setLayout() {
@@ -189,6 +190,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.CART_LIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("CART_RES",response);
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -207,6 +209,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                             String ProductName = object.getString("ProductName");
                             String ProductShortDescription = object.getString("CategoryName");
                             String Quantity = object.getString("Quantity");
+                            String ProductRating = object.getString("ProductRating");
 
                             totalTax += Double.parseDouble(object.getString("TotalTax"));
 
@@ -224,7 +227,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);
                             String image = "https://smlawb.org/superbazaar/web/uploads/product/" + obj.getString("ProductFileName");
-                            modelList.add(new CartModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice, totalPrice));
+                            modelList.add(new CartModel(cartId, prodId, ProductName, ProductShortDescription, Quantity, image, ProductMarketPrice, ProductSellingPrice, totalPrice,ProductRating));
                         }
                         CartAdapter adapter = new CartAdapter(modelList, getActivity());
                         binding.rvCart.setAdapter(adapter);
@@ -274,7 +277,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
                 break;
-
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_cart_to_search);
+                break;
             case R.id.llLogin:
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);

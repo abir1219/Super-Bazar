@@ -258,6 +258,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void searchProduct(int destination){
+        navController.navigate(destination);//This will open
+    }
+
     public void openDrawer() {
         if (!binding.drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             binding.drawerLayout.openDrawer(Gravity.LEFT);

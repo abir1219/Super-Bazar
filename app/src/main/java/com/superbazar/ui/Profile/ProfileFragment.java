@@ -206,6 +206,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         binding.tvUsername.setOnClickListener(this);
         binding.changePw.setOnClickListener(this);
         binding.btnUpdate.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
 
@@ -299,6 +300,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.llMenu:
                 ((MainActivity)getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_profile_to_search);
                 break;
             case R.id.tvName:
                 getEditData = Constants.NAME;

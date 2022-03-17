@@ -16,6 +16,15 @@ public class Urls {
     public static String CATEGORY = BASE_URL + "category";
 
     /*
+    Function: product-search
+    Method: POST
+    Parameter:search_data
+
+     */
+    public static String PRODUCT_SEARCH = BASE_URL + "product-search";
+
+
+    /*
    Function: categorywiseproductdetails
    Method: POST
     */

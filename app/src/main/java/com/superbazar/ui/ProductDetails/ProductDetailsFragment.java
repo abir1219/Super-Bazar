@@ -271,6 +271,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         binding.tvPrice.setText("₹ " + object.getString("ProductMarketPrice"));
                         binding.tvOffPrice.setText("₹ " + object.getString("ProductSellingPrice"));
                         binding.tvProductName.setText(object.getString("ProductName"));
+                        binding.tvRating.setText(object.getString("ProductRating"));
                         binding.tvProdDesc.setText(object.getString("ProductShortDescription"));
                         binding.tvpDescr.setText(Html.fromHtml(object.getString("ProductLongDescription")));
 
@@ -320,6 +321,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         binding.ivMinus.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -327,6 +329,9 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_product_details_to_search);
                 break;
             case R.id.llAddtoCart:
                 if(YoDB.getPref().read(Constants.ID,"").isEmpty()){

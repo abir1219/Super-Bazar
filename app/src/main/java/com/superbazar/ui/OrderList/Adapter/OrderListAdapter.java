@@ -35,7 +35,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvId.setText("Order Id : "+modelList.get(position).getOrderId());
+        holder.tvId.setText("Order Id : "+modelList.get(position).getOrder_number());
         holder.tvDate.setText(modelList.get(position).getDateTime());
         holder.tvPrice.setText("Rs."+modelList.get(position).getTotalAmount());
 
@@ -78,7 +78,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
             holder.vO_OP.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
             holder.vO_D.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
             //}else if (orederPreModels.get(position).getmListOrder().get(0).getDelivery_status().equalsIgnoreCase("despatch")){
-        }else if (deliveryStatus.equalsIgnoreCase("delivered")){
+        }else if (deliveryStatus.equalsIgnoreCase("dispatch")){
             holder.ivO_P.setBackground(context.getDrawable(R.drawable.ic_zchecked));
             holder.ivO_OP.setBackground(context.getDrawable(R.drawable.ic_zchecked));
             holder.ivO_D.setBackground(context.getDrawable(R.drawable.ic_zchecked));

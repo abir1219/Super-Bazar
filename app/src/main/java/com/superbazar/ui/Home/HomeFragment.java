@@ -325,6 +325,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -332,6 +333,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_home_to_search);
                 break;
             case R.id.llCart:
                 Navigation.findNavController(view).navigate(R.id.nav_home_to_cart);

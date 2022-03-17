@@ -139,6 +139,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -146,6 +147,9 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_order_details_to_search);
                 break;
             case R.id.llCart:
                 Bundle bundle = new Bundle();

@@ -233,6 +233,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
         binding.llMenu.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -240,6 +241,9 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity)getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_address_list_to_search);
                 break;
             case R.id.llCart:
                 Bundle bundle2 = new Bundle();

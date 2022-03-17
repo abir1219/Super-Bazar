@@ -38,6 +38,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTitle.setText(modelList.get(position).getProdName());
         holder.tvDetails.setText(modelList.get(position).getShortDesc());
+        holder.tvRating.setText(modelList.get(position).getRating());
         holder.tvPrice.setText("₹ "+modelList.get(position).getActualPrice());
         holder.tvOffPrice.setText("₹ "+modelList.get(position).getShopPrice());
         Glide.with(context).load(modelList.get(position).getProdImage()).into(holder.ivPPic);
@@ -59,7 +60,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView ivPPic,ivMinus,ivPlus;
-        TextView tvTitle,tvDetails,tvOffPrice,tvPrice;
+        TextView tvTitle,tvDetails,tvOffPrice,tvPrice,tvRating;
         EditText tvCount;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +73,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             tvDetails = itemView.findViewById(R.id.tvDetails);
             tvOffPrice = itemView.findViewById(R.id.tvOffPrice);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvRating = itemView.findViewById(R.id.tvRating);
         }
     }
 }

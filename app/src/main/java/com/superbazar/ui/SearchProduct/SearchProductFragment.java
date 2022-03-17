@@ -1,17 +1,19 @@
-package com.superbazar.ui.ProductList;
+package com.superbazar.ui.SearchProduct;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,9 +27,9 @@ import com.superbazar.MainActivity;
 import com.superbazar.R;
 import com.superbazar.Utils.Constants;
 import com.superbazar.Utils.Urls;
-import com.superbazar.databinding.FragmentProductListBinding;
-import com.superbazar.ui.ProductList.Adapter.ProductListAdapter;
-import com.superbazar.ui.ProductList.Model.ProductListModel;
+import com.superbazar.databinding.FragmentSearchProductBinding;
+import com.superbazar.ui.SearchProduct.Adapter.SearchProductAdapter;
+import com.superbazar.ui.SearchProduct.Model.SearchProductModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,37 +40,57 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductListFragment extends Fragment implements View.OnClickListener {
-    FragmentProductListBinding binding;
-    List<ProductListModel> modelList;
+public class SearchProductFragment extends Fragment implements View.OnClickListener{
+    FragmentSearchProductBinding binding;
+    List<SearchProductModel> modelList;
 
     @Override
     public void onResume() {
         super.onResume();
-        try{
+        try {
             BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
             navBar.setVisibility(View.GONE);
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentProductListBinding.inflate(inflater, container, false);
-        try{
+        binding = FragmentSearchProductBinding.inflate(inflater,container,false);
+        try {
             BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_nav);
             navBar.setVisibility(View.GONE);
-        }catch (NullPointerException e){}
-
+        } catch (NullPointerException e) {
+        }
         BtnClick();
-        //Bundle bundle = getArguments();
-        //Log.d("ID","dsasda"+bundle.getString("id"));
-        //Toast.makeText(getActivity(), "ID:"+bundle.getString("id"), Toast.LENGTH_SHORT).show();
-        setLayout();
         loadCartCount();
         loadWishlistCount();
-        loadProductList();
+        setLayout();
+
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //searchProductModels.clear();
+                if(newText.length() == 0){
+                    binding.llNoSearchFound.setVisibility(View.VISIBLE);
+                    binding.rvSearchList.setVisibility(View.GONE);
+                }else{
+                    binding.rvSearchList.setVisibility(View.VISIBLE);
+                    binding.llNoSearchFound.setVisibility(View.GONE);
+                    //binding.searchView.setFocusable(false);
+                    getSearchList(newText);
+                }
+                return true;
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -148,68 +170,65 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
-    private void loadProductList() {
+    private void getSearchList(String newText) {
         modelList = new ArrayList<>();
-        String api = Urls.CATEGORYWISEPRODCUTDETAILS + "?id=" + getArguments().getString("id");
-        Log.d("API RES", "API: " + api);
-        StringRequest sr = new StringRequest(Request.Method.POST, Urls.CATEGORYWISEPRODCUTDETAILS, new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Urls.PRODUCT_SEARCH, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("RESPONSE", response);
                 try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.getString("status").equals("1")) {
-                        JSONArray jsonArray = object.getJSONArray("results");
-                        for(int i=0;i<jsonArray.length();i++){
-                            JSONObject jobj = jsonArray.getJSONObject(i);
-                            String ProductId = jobj.getString("ProductId");
-                            String ProductName = jobj.getString("ProductName");
-                            String ProductRating = jobj.getString("ProductRating");
-                            String ProductShortDescription = jobj.getString("ProductShortDescription");
-                            String ProductMarketPrice = jobj.getString("ProductMarketPrice");
-                            String ProductSellingPrice = jobj.getString("ProductSellingPrice");
-                            JSONArray array = jobj.getJSONArray("ProductFiles");
-                            //for(int i=0;i<array.length();i++){}
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            String productImage = "https://smlawb.org/superbazaar/web/uploads/product/" + jsonObject.getString("ProductFileName");
-                            modelList.add(new ProductListModel(ProductId, ProductName, productImage, ProductMarketPrice, ProductSellingPrice, ProductShortDescription,ProductRating));
+                    JSONObject jsonObject = new JSONObject(response);
+                    Log.d("SEARCH_RES",response);
+                    if(jsonObject.getString("status").equals("1")){
+                        JSONArray array = jsonObject.getJSONArray("results");
+                        for(int i=0;i< array.length();i++){
+                            JSONObject object = array.getJSONObject(i);
+                            String ProductId = object.getString("ProductId");
+                            String ProductName = object.getString("ProductName");
+                            String ProductShortDescription = object.getString("ProductShortDescription");
+                            JSONArray jsonArray = object.getJSONArray("ProductFiles");
+                            JSONObject obj = jsonArray.getJSONObject(0);
+                            String ProductFileName = "https://smlawb.org/superbazaar/web/uploads/product/" +obj.getString("ProductFileName");
+
+                            modelList.add(new SearchProductModel(ProductId,ProductName,ProductShortDescription,ProductFileName));
                         }
+                        SearchProductAdapter adapter = new SearchProductAdapter(modelList,getActivity());
+                        binding.rvSearchList.setAdapter(adapter);
+
+                    }else if(jsonObject.getString("status").equals("0")){
+                        binding.searchView.setFocusable(true);
+                        binding.llNoSearchFound.setVisibility(View.VISIBLE);
+                        binding.rvSearchList.setVisibility(View.GONE);
                     }
-                    ProductListAdapter adapter = new ProductListAdapter(modelList,getActivity());
-                    binding.rvProductList.setAdapter(adapter);
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getActivity(), "Getting some troubles", Toast.LENGTH_SHORT).show();
             }
         }){
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Log.d("BODY_ID",getArguments().getString("id"));
                 Map<String, String> body = new HashMap<>();
-                body.put("id",getArguments().getString("id"));
+                body.put("search_data",newText);
                 return body;
             }
         };
         Volley.newRequestQueue(getActivity()).add(sr);
     }
 
-    private void setLayout() {
-        binding.rvProductList.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-    }
-
     private void BtnClick() {
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.llWisth.setOnClickListener(this);
-        binding.llSearch.setOnClickListener(this);
+    }
+
+    private void setLayout() {
+        binding.rvSearchList.setLayoutManager(new GridLayoutManager(getActivity(),1, RecyclerView.VERTICAL,false));
     }
 
     @Override
@@ -218,14 +237,11 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
                 break;
-            case R.id.llSearch:
-                ((MainActivity) getActivity()).searchProduct(R.id.nav_productList_to_search);
-                break;
             case R.id.llCart:
-                Navigation.findNavController(view).navigate(R.id.nav_productList_to_cart);
+                Navigation.findNavController(view).navigate(R.id.nav_search_product_to_cart);
                 break;
             case R.id.llWisth:
-                Navigation.findNavController(view).navigate(R.id.nav_productList_to_wishlist);
+                Navigation.findNavController(view).navigate(R.id.nav_search_product_to_wishlist);
                 break;
         }
     }

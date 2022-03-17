@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,6 +158,7 @@ public class OrderListFragment extends Fragment implements View.OnClickListener{
         StringRequest sr = new StringRequest(Request.Method.POST, Urls.ORDER_LIST, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("OrderList_RES",response);
                 dialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -167,11 +169,12 @@ public class OrderListFragment extends Fragment implements View.OnClickListener{
                         for(int i=0;i<array.length();i++){
                             JSONObject object = array.getJSONObject(i);
                             String orderId = object.getString("OrderId");
+                            String OrderNumber = object.getString("OrderNumber");
                             String OrderDate = object.getString("OrderDate");
                             String OrderStatus = object.getString("OrderStatus");
                             String TotalAmmount = object.getString("TotalAmmount");
 
-                            modelList.add(new OrderListModel(orderId,OrderDate,TotalAmmount,OrderStatus));
+                            modelList.add(new OrderListModel(orderId,OrderNumber,OrderDate,TotalAmmount,OrderStatus));
                         }
                         OrderListAdapter adapter = new OrderListAdapter(modelList,getActivity());
                         binding.rvOrder.setAdapter(adapter);
@@ -205,6 +208,7 @@ public class OrderListFragment extends Fragment implements View.OnClickListener{
         binding.llMenu.setOnClickListener(this);
         binding.llCart.setOnClickListener(this);
         binding.flWishlist.setOnClickListener(this);
+        binding.llSearch.setOnClickListener(this);
     }
 
     @Override
@@ -212,6 +216,9 @@ public class OrderListFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.llMenu:
                 ((MainActivity) getActivity()).openDrawer();
+                break;
+            case R.id.llSearch:
+                ((MainActivity) getActivity()).searchProduct(R.id.nav_order_list_to_search);
                 break;
             case R.id.llCart:
                 Bundle bundle = new Bundle();
