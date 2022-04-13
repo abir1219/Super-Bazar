@@ -1,5 +1,8 @@
+
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
+
     //id 'com.google.gms.google-services'
 }
 
@@ -65,4 +68,14 @@ dependencies {
     //Lottie
     implementation 'com.airbnb.android:lottie:3.7.0'
     implementation 'com.google.android.play:core:1.10.3'
+
+    //Stripe
+    implementation 'com.stripe:stripe-java:20.77.0'
+    implementation 'com.stripe:stripe-android:17.2.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
+
 }

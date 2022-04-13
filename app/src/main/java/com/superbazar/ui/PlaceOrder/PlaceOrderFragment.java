@@ -33,6 +33,7 @@ import com.superbazar.Utils.Urls;
 import com.superbazar.databinding.FragmentPlaceOrderBinding;
 import com.superbazar.databinding.OrderSuccessDialogBinding;
 import com.superbazar.ui.RazorPay.RazorPayActivity;
+import com.superbazar.ui.StripePay.CheckoutActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -204,7 +205,8 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                         placeOrder();
                     } else if (payment_mode.equalsIgnoreCase("online")) {
                         //Toast.makeText(getActivity(), "Working on it", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), RazorPayActivity.class);
+                        //Intent intent = new Intent(getActivity(), RazorPayActivity.class);
+                        Intent intent = new Intent(getActivity(), CheckoutActivity.class);
                         intent.putExtra("addressId",getArguments().getString("addressId"));
                         intent.putExtra("total",getArguments().getString("total"));
                         intent.putExtra("payment_type",payment_mode);

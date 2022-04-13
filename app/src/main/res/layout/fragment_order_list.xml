@@ -161,7 +161,6 @@
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv"
-            android:layout_marginBottom="65dp"
             android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

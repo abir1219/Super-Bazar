@@ -86,7 +86,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if(jsonObject.getString("status").equals("1")){
-                        binding.tvId.setText("Order Id: "+getArguments().getString("order_id"));
+                        binding.tvId.setText("Order Id: "+getArguments().getString("order_No"));
                         binding.tvDate.setText(getArguments().getString("dateTime"));
                         binding.tvPrice.setText("Total Amount: ₹ "+getArguments().getString("amount"));
 

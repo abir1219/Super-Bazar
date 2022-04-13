@@ -211,7 +211,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                     JSONObject object = new JSONObject(response);
                     if (object.getString("status").equals("1")) {
                         JSONArray jsonArray = object.getJSONArray("results");
-                        Log.d("JSON_ARRAY",jsonArray.toString());
+                        Log.d("JSON_ARRAY", jsonArray.toString());
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jobj = jsonArray.getJSONObject(i);
                             String ProductId = jobj.getString("ProductId");
@@ -239,12 +239,12 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> body = new HashMap<>();
-                body.put("id",categoryId);
+                Map<String, String> body = new HashMap<>();
+                body.put("id", categoryId);
                 return body;
             }
         };
@@ -261,7 +261,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.d("JSON_OBJ",response);
+                    Log.d("JSON_OBJ", response);
                     if (jsonObject.getString("status").equals("1")) {
                         JSONObject object = jsonObject.getJSONObject("results");
                         categoryId = object.getString("CategoryId");
@@ -274,6 +274,12 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         binding.tvRating.setText(object.getString("ProductRating"));
                         binding.tvProdDesc.setText(object.getString("ProductShortDescription"));
                         binding.tvpDescr.setText(Html.fromHtml(object.getString("ProductLongDescription")));
+
+                        int noOfStock = Integer.parseInt(object.getString("NumberOfStock"));
+                        if (noOfStock <= 10) {
+                            binding.tvStock.setVisibility(View.VISIBLE);
+                            binding.tvStock.setText("Hurry Up!! Only " + object.getString("NumberOfStock") + " Products Left");
+                        }
 
                         JSONArray array = object.getJSONArray("ProductFiles");
                         for (int i = 0; i < array.length(); i++) {
@@ -300,12 +306,12 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Getting some troubles.", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> body = new HashMap<>();
-                body.put("id",getArguments().getString("id"));
+                body.put("id", getArguments().getString("id"));
                 return body;
             }
         };
@@ -334,34 +340,34 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 ((MainActivity) getActivity()).searchProduct(R.id.nav_product_details_to_search);
                 break;
             case R.id.llAddtoCart:
-                if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+                if (YoDB.getPref().read(Constants.ID, "").isEmpty()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                     getActivity().finish();
-                }else {
+                } else {
                     addToCart();
                 }
                 break;
             case R.id.llAddtoWishlist:
-                if(YoDB.getPref().read(Constants.ID,"").isEmpty()){
+                if (YoDB.getPref().read(Constants.ID, "").isEmpty()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().overridePendingTransition(R.anim.fade_in_animation, R.anim.fade_out_animation);
                     getActivity().finish();
-                }else{
+                } else {
                     addToWishlist();
                 }
                 break;
             case R.id.ivPlus:
                 int qty = Integer.parseInt(binding.tvCount.getText().toString());
                 qty++;
-                binding.tvCount.setText(""+qty);
+                binding.tvCount.setText("" + qty);
                 break;
             case R.id.ivMinus:
                 int qt = Integer.parseInt(binding.tvCount.getText().toString());
-                if(qt > 1){
+                if (qt > 1) {
                     qt--;
                 }
-                binding.tvCount.setText(""+qt);
+                binding.tvCount.setText("" + qt);
                 break;
             case R.id.llCart:
                 Navigation.findNavController(view).navigate(R.id.nav_product_details_to_cart);
@@ -381,10 +387,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(object.getString("status").equals("1")){
+                    if (object.getString("status").equals("1")) {
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         loadWishlistCount();
-                    }else{
+                    } else {
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -419,10 +425,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(response);
-                    if(object.getString("status").equals("1")){
+                    if (object.getString("status").equals("1")) {
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                         loadCartCount();
-                    }else{
+                    } else {
                         Toast.makeText(getActivity(), object.getString("message"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -439,8 +445,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Log.d("ID_RES",YoDB.getPref().read(Constants.ID, ""));
-                Log.d("productId",productId);
+                Log.d("ID_RES", YoDB.getPref().read(Constants.ID, ""));
+                Log.d("productId", productId);
                 Map<String, String> body = new HashMap<>();
                 body.put("id", YoDB.getPref().read(Constants.ID, ""));
                 body.put("ProductId", productId);

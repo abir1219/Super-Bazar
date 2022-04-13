@@ -106,6 +106,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.View
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString("order_id",modelList.get(position).getOrderId());
+                bundle.putString("order_No",modelList.get(position).getOrder_number());
                 bundle.putString("dateTime",modelList.get(position).getDateTime());
                 bundle.putString("amount",modelList.get(position).getTotalAmount());
                 Navigation.findNavController(view).navigate(R.id.nav_order_list_to_order_details,bundle);
