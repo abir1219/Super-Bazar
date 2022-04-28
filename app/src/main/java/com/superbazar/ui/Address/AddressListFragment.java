@@ -262,6 +262,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                 }else{
                     bundle.putString("total",getArguments().getString("total"));
                     bundle.putString("totalTax", getArguments().getString("totalTax"));
+                    bundle.putString("deliveryCharge", getArguments().getString("deliveryCharge"));
                 }
                 Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address,bundle);
                 break;
@@ -273,6 +274,7 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                     Bundle bundle1 = new Bundle();
                     bundle1.putString("total", getArguments().getString("total"));
                     bundle1.putString("totalTax", getArguments().getString("totalTax"));
+                    bundle1.putString("deliveryCharge", getArguments().getString("deliveryCharge"));
                     bundle1.putString("addressId", address_id);
                     Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order, bundle1);
                     break;

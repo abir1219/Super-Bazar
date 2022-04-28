@@ -276,6 +276,7 @@ public class CreateAddressFragment extends Fragment implements View.OnClickListe
                             //Toast.makeText(getActivity(), "normal", Toast.LENGTH_SHORT).show();
                             bundle.putString("total", getArguments().getString("total"));
                             bundle.putString("totalTax", getArguments().getString("totalTax"));
+                            bundle.putString("deliveryCharge", getArguments().getString("deliveryCharge"));
                         }
                         Navigation.findNavController(v).navigate(R.id.navigation_address_to_address, bundle);
                     } else {

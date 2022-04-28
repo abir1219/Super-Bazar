@@ -219,7 +219,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                             String categoryName = jobj.getString("CategoryName");
                             String ProductShortDescription = jobj.getString("ProductShortDescription");
                             String ProductMarketPrice = jobj.getString("ProductMarketPrice");
-                            String ProductSellingPrice = jobj.getString("ProductSellingPrice");
+                            String ProductSellingPrice = jobj.getString("NetAmount");
                             JSONArray array = jobj.getJSONArray("ProductFiles");
                             //for(int i=0;i<array.length();i++){}
                             JSONObject jsonObject = array.getJSONObject(0);
@@ -269,9 +269,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         productId = ProductId;
                         //Toast.makeText(getActivity(), "categoryId: "+categoryId+",CategoryId"+object.getString("CategoryId"), Toast.LENGTH_SHORT).show();
                         binding.tvPrice.setText("₹ " + object.getString("ProductMarketPrice"));
-                        binding.tvOffPrice.setText("₹ " + object.getString("ProductSellingPrice"));
+                        binding.tvOffPrice.setText("₹ " + object.getString("NetAmount"));
                         binding.tvProductName.setText(object.getString("ProductName"));
                         binding.tvRating.setText(object.getString("ProductRating"));
+                        binding.tvDiscount.setText("("+object.getString("ProductDiscount")+"% Off)");
                         binding.tvProdDesc.setText(object.getString("ProductShortDescription"));
                         binding.tvpDescr.setText(Html.fromHtml(object.getString("ProductLongDescription")));
 

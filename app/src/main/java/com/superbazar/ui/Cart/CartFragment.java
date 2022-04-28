@@ -47,6 +47,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     ProgressDialog progressDialog;
     List<CartModel> modelList;
     String totalCost = "";
+    String deliveryCharge = "";
     Double totalTax = 0.0;
     boolean pincodeChecked = false;
 
@@ -197,6 +198,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                     if (jsonObject.getString("status").equals("1")) {
                         binding.tvTotal.setText("₹ " + jsonObject.getString("total"));
                         totalCost = jsonObject.getString("total");
+                        deliveryCharge = jsonObject.getString("deliveryCharge");
                         //Toast.makeText(getActivity(), "have", Toast.LENGTH_SHORT).show();
                         binding.llDataNotFound.setVisibility(View.GONE);
                         binding.llAfterLogin.setVisibility(View.VISIBLE);
@@ -214,14 +216,14 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                             totalTax += Double.parseDouble(object.getString("TotalTax"));
 
                             Double marketPrice = Double.parseDouble(object.getString("ProductMarketPrice")) * Double.parseDouble(Quantity);
-                            Double sellingPrice = Double.parseDouble(object.getString("ProductSellingPrice")) * Double.parseDouble(Quantity);
-                            Double total = Double.parseDouble(object.getString("ProductSellingPrice")) * Double.parseDouble(Quantity);
+                            Double sellingPrice = Double.parseDouble(object.getString("NetAmount")) * Double.parseDouble(Quantity);
+                            Double total = Double.parseDouble(object.getString("NetAmount")) * Double.parseDouble(Quantity);
 
                             /*String ProductMarketPrice = String.format("%.2f",marketPrice);
                             String ProductSellingPrice = String.format("%.2f",sellingPrice);*/
 
                             String ProductMarketPrice = String.format("%.2f", Double.parseDouble(object.getString("ProductMarketPrice")));
-                            String ProductSellingPrice = String.format("%.2f", Double.parseDouble(object.getString("ProductSellingPrice")));
+                            String ProductSellingPrice = String.format("%.2f", Double.parseDouble(object.getString("NetAmount")));
                             String totalPrice = String.format("%.2f", total);
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
@@ -297,6 +299,7 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 if(pincodeChecked == true){
                     Bundle bundle = new Bundle();
                     bundle.putString("total", totalCost);
+                    bundle.putString("deliveryCharge", deliveryCharge);
                     bundle.putString("totalTax", String.format("%.2f",totalTax));
                     Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list, bundle);
                 }else{

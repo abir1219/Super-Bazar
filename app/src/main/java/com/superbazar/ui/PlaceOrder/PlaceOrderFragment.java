@@ -75,6 +75,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
         Double total  = Double.parseDouble(ttl) - Double.parseDouble(getArguments().getString("totalTax"));
         binding.tvTotalPrice.setText(String.format("%.2f",total));
         binding.tvTax.setText(getArguments().getString("totalTax"));
+        binding.tvShippingCharge.setText(""+Double.parseDouble(getArguments().getString("deliveryCharge")));
         binding.tvAllTotal.setText(getArguments().getString("total"));
         binding.txt.setText("₹ " + getArguments().getString("total"));
 
@@ -208,6 +209,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                         //Intent intent = new Intent(getActivity(), RazorPayActivity.class);
                         Intent intent = new Intent(getActivity(), CheckoutActivity.class);
                         intent.putExtra("addressId",getArguments().getString("addressId"));
+                        intent.putExtra("deliveryCharge",getArguments().getString("deliveryCharge"));
                         intent.putExtra("total",getArguments().getString("total"));
                         intent.putExtra("payment_type",payment_mode);
                         startActivity(intent);

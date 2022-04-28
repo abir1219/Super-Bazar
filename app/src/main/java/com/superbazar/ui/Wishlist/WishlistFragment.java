@@ -196,7 +196,7 @@ public class WishlistFragment extends Fragment implements View.OnClickListener {
                             String ProductRating = object.getString("ProductRating");
                             String ProductShortDescription = object.getString("CategoryName");
                             String ProductMarketPrice = object.getString("ProductMarketPrice");
-                            String ProductSellingPrice = object.getString("ProductSellingPrice");
+                            String ProductSellingPrice = object.getString("NetAmount");
 
                             JSONArray jsonArray = object.getJSONArray("ProductFiles");
                             JSONObject obj = jsonArray.getJSONObject(0);

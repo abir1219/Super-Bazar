@@ -281,14 +281,14 @@
                             </FrameLayout>
 
                             <TextView
+                                android:id="@+id/tvDiscount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:paddingLeft="5dp"
                                 android:text="30% off"
-                                android:textColor="@color/colorOrange"
-                                android:textSize="12sp"
-                                android:visibility="gone" />
+                                android:textColor="@color/colorPink"
+                                android:textSize="12sp"/>
 
                         </LinearLayout>
 
@@ -299,15 +299,16 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tvpName"
+                                android:id="@+id/tvDeliveryCharge"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:paddingLeft="5dp"
-                                android:text="Free Delivery"
-                                android:textColor="@color/black"
+                                tools:text="0%"
+                                android:visibility="gone"
+                                android:textColor="@color/baseColor"
                                 android:textSize="15sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"/>
 
                         </LinearLayout>
 

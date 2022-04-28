@@ -284,18 +284,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Discount"
+                            android:text="Shipping Charge"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
                         <TextView
-                            android:id="@+id/tvDiscount"
+                            android:id="@+id/tvShippingCharge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -307,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:layout_toLeftOf="@+id/tvDiscount"
+                            android:layout_toLeftOf="@+id/tvShippingCharge"
                             android:text="Rs."
                             android:textColor="@color/black"
                             android:textSize="15sp" />

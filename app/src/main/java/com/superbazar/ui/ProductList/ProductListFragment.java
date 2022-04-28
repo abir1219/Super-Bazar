@@ -167,7 +167,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                             String ProductRating = jobj.getString("ProductRating");
                             String ProductShortDescription = jobj.getString("ProductShortDescription");
                             String ProductMarketPrice = jobj.getString("ProductMarketPrice");
-                            String ProductSellingPrice = jobj.getString("ProductSellingPrice");
+                            String ProductSellingPrice = jobj.getString("NetAmount");
                             JSONArray array = jobj.getJSONArray("ProductFiles");
                             //for(int i=0;i<array.length();i++){}
                             JSONObject jsonObject = array.getJSONObject(0);
