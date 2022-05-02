@@ -47,7 +47,9 @@ public class CartFragment extends Fragment implements View.OnClickListener {
     ProgressDialog progressDialog;
     List<CartModel> modelList;
     String totalCost = "";
+    String totalCostExcludingTax = "";
     String deliveryCharge = "";
+    String totalDiscount = "";
     Double totalTax = 0.0;
     boolean pincodeChecked = false;
 
@@ -196,9 +198,11 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("status").equals("1")) {
-                        binding.tvTotal.setText("₹ " + jsonObject.getString("total"));
-                        totalCost = jsonObject.getString("total");
+                        binding.tvTotal.setText("₹ " + jsonObject.getString("alltotal"));
+                        totalCost = jsonObject.getString("alltotal");
+                        totalDiscount = jsonObject.getString("totaldiscount");
                         deliveryCharge = jsonObject.getString("deliveryCharge");
+                        totalCostExcludingTax = jsonObject.getString("totalexclusivetaxanddiscount");
                         //Toast.makeText(getActivity(), "have", Toast.LENGTH_SHORT).show();
                         binding.llDataNotFound.setVisibility(View.GONE);
                         binding.llAfterLogin.setVisibility(View.VISIBLE);
@@ -300,6 +304,8 @@ public class CartFragment extends Fragment implements View.OnClickListener {
                     Bundle bundle = new Bundle();
                     bundle.putString("total", totalCost);
                     bundle.putString("deliveryCharge", deliveryCharge);
+                    bundle.putString("totalCostExcludingTax", totalCostExcludingTax);
+                    bundle.putString("totalDiscount", totalDiscount);
                     bundle.putString("totalTax", String.format("%.2f",totalTax));
                     Navigation.findNavController(v).navigate(R.id.nav_cart_to_address_list, bundle);
                 }else{

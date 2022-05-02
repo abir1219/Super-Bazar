@@ -73,11 +73,13 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
 
         String ttl = getArguments().getString("total").replace(",","");
         Double total  = Double.parseDouble(ttl) - Double.parseDouble(getArguments().getString("totalTax"));
-        binding.tvTotalPrice.setText(String.format("%.2f",total));
+        //binding.tvTotalPrice.setText(String.format("%.2f",total));
+        binding.tvTotalPrice.setText(getArguments().getString("totalCostExcludingTax"));
         binding.tvTax.setText(getArguments().getString("totalTax"));
         binding.tvShippingCharge.setText(""+Double.parseDouble(getArguments().getString("deliveryCharge")));
         binding.tvAllTotal.setText(getArguments().getString("total"));
         binding.txt.setText("₹ " + getArguments().getString("total"));
+        binding.tvCharge.setText("-" + getArguments().getString("totalDiscount"));
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

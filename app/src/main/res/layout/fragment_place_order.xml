@@ -225,15 +225,6 @@
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/tvTotalPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            tools:text="00.00" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -244,6 +235,17 @@
                             android:text="Rs."
                             android:textColor="@color/black"
                             android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            tools:text="00.00" />
+
 
                     </RelativeLayout>
 
@@ -289,8 +291,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Shipping Charge"
+                            android:text="Delivery Charge"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -319,15 +320,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:visibility="gone">
+                        android:layout_marginRight="20dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Shipping Charge"
-                            android:textColor="@color/gray1"
+                            android:text="Discount"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_toLeftOf="@+id/tvCharge"
+                            android:text="Rs."
+                            android:textColor="@color/black"
                             android:textSize="15sp" />
 
                         <TextView
@@ -335,16 +343,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
                             android:text="00.00"
-                            android:textColor="@color/gray1"
+                            android:textColor="@color/black"
                             android:textSize="15sp" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:background="@color/gray" />
 
                     <RelativeLayout

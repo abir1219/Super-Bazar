@@ -262,7 +262,9 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                 }else{
                     bundle.putString("total",getArguments().getString("total"));
                     bundle.putString("totalTax", getArguments().getString("totalTax"));
+                    bundle.putString("totalDiscount", getArguments().getString("totalDiscount"));
                     bundle.putString("deliveryCharge", getArguments().getString("deliveryCharge"));
+                    bundle.putString("totalCostExcludingTax", getArguments().getString("totalCostExcludingTax"));
                 }
                 Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_address,bundle);
                 break;
@@ -275,6 +277,8 @@ public class AddressListFragment extends Fragment implements View.OnClickListene
                     bundle1.putString("total", getArguments().getString("total"));
                     bundle1.putString("totalTax", getArguments().getString("totalTax"));
                     bundle1.putString("deliveryCharge", getArguments().getString("deliveryCharge"));
+                    bundle1.putString("totalDiscount", getArguments().getString("totalDiscount"));
+                    bundle1.putString("totalCostExcludingTax", getArguments().getString("totalCostExcludingTax"));
                     bundle1.putString("addressId", address_id);
                     Navigation.findNavController(v).navigate(R.id.navigation_address_list_to_place_order, bundle1);
                     break;

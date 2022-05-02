@@ -96,7 +96,7 @@ public class OrderDetailsFragment extends Fragment implements View.OnClickListen
                             JSONObject object = array.getJSONObject(i);
                             String prodName = object.getString("ProductName");
                             String quantity = object.getString("Quantity");
-                            String unit_price_with_tax = object.getString("SellingPrice");
+                            String unit_price_with_tax = object.getString("NetAmount");
 
                             //String image_1 = "https://smlawb.org/superbazaar/web/uploads/product/" + Html.fromHtml(object.getString("image_1"));
                             String prodId = object.getString("product_id");
