@@ -291,6 +291,7 @@ public class PlaceOrderFragment extends Fragment implements View.OnClickListener
                 body.put("payment_type",payment_mode);
                 body.put("address_id",getArguments().getString("addressId"));
                 body.put("total",getArguments().getString("total").replace(",",""));
+                body.put("delidery_charge",getArguments().getString("deliveryCharge"));
                 return body;
             }
         };

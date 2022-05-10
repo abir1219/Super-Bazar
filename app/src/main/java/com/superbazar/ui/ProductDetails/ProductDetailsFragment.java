@@ -272,7 +272,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                         binding.tvOffPrice.setText("₹ " + object.getString("NetAmount"));
                         binding.tvProductName.setText(object.getString("ProductName"));
                         binding.tvRating.setText(object.getString("ProductRating"));
-                        binding.tvDiscount.setText("("+object.getString("ProductDiscount")+"% Off)");
+                        binding.tvDiscount.setText("(₹"+object.getString("ProductDiscount")+" Off)");
                         binding.tvProdDesc.setText(object.getString("ProductShortDescription"));
                         binding.tvpDescr.setText(Html.fromHtml(object.getString("ProductLongDescription")));
 

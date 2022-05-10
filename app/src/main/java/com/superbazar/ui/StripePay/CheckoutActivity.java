@@ -277,6 +277,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 body.put("payment_type", getIntent().getStringExtra("payment_type"));
                 body.put("address_id", getIntent().getStringExtra("addressId"));
                 body.put("total", getIntent().getStringExtra("total").replace(",", ""));
+                body.put("delidery_charge",getIntent().getStringExtra("deliveryCharge"));
                 return body;
             }
         };
